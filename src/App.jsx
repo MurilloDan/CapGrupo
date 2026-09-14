@@ -496,10 +496,19 @@ function Header({ home = true }) {
   )
 }
 
+const statIcons = {
+  'Empresas del grupo': <><path d="M3 21h18M5 21V8l7-5 7 5v13" /><path d="M9 21v-6h6v6M9 11h.01M15 11h.01" /></>,
+  Colaboradores: <><circle cx="9" cy="8" r="3.5" /><path d="M2.5 20a6.5 6.5 0 0 1 13 0M16 4.5a3.5 3.5 0 0 1 0 7M18 14.5a6.5 6.5 0 0 1 3.5 5.5" /></>,
+  'Áreas centralizadas': <><rect x="3" y="3" width="7" height="7" rx="1" /><rect x="14" y="3" width="7" height="7" rx="1" /><rect x="3" y="14" width="7" height="7" rx="1" /><rect x="14" y="14" width="7" height="7" rx="1" /></>,
+  'Años consolidando': <><rect x="3" y="5" width="18" height="16" rx="2" /><path d="M3 10h18M8 3v4M16 3v4M8 15h3" /></>,
+  default: <circle cx="12" cy="12" r="8" />,
+}
+
 function Stat({ value, suffix = '', label }) {
   const ref = useRef(null)
   const [animate] = useState(() => !window.matchMedia('(prefers-reduced-motion: reduce)').matches && 'IntersectionObserver' in window)
   const [shown, setShown] = useState(animate ? 0 : value)
+  const [inView, setInView] = useState(!animate)
 
   useEffect(() => {
     if (!animate) return
@@ -507,6 +516,7 @@ function Stat({ value, suffix = '', label }) {
     const observer = new IntersectionObserver(([entry]) => {
       if (!entry.isIntersecting) return
       observer.disconnect()
+      setInView(true)
       const start = performance.now()
       const tick = (now) => {
         const progress = Math.min((now - start) / 1400, 1)
@@ -522,7 +532,14 @@ function Stat({ value, suffix = '', label }) {
     }
   }, [animate, value])
 
-  return <div className="stat" ref={ref}><strong aria-label={`${value}${suffix}`}>{pad(shown)}{suffix}</strong><span>{label}</span></div>
+  return (
+    <div className={`stat${inView ? ' is-in' : ''}`} ref={ref}>
+      <span className="stat-icon" aria-hidden="true"><svg viewBox="0 0 24 24">{statIcons[label] ?? statIcons.default}</svg></span>
+      <strong aria-label={`${value}${suffix}`}>{pad(shown)}{suffix}</strong>
+      <span className="stat-label">{label}</span>
+      <span className="stat-bar" aria-hidden="true" />
+    </div>
+  )
 }
 
 function SectionLabel({ number, children }) {
