@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 200" role="img" aria-label="Inversiones Marlon">
+  <rect width="320" height="200" fill="#ffffff"/>
+  <rect x="136" y="46" width="48" height="6" fill="#d71920"/>
+  <text x="160" y="104" text-anchor="middle" font-family="Manrope, Arial, sans-serif" font-size="22" font-weight="600" letter-spacing="6" fill="#5e5a5a">INVERSIONES</text>
+  <text x="160" y="150" text-anchor="middle" font-family="Manrope, Arial, sans-serif" font-size="44" font-weight="800" letter-spacing="1" fill="#1a1a1a">MARLON</text>
+</svg>
