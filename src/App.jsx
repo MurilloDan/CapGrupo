@@ -850,7 +850,7 @@ function HomePage() {
           </div>
           <h3 className="subheading reveal"><Words>Contacto de nuestras empresas</Words></h3>
           <ul className="contacts-grid">
-            {companies.filter((company) => company.contact || ['cap-logistics', 'inversiones-marlon'].includes(company.slug)).map((company) => (
+            {companies.filter((company) => company.contact || ['cap-logistics', 'soluciones-marlons'].includes(company.slug)).map((company) => (
               <li className={`contact-card reveal${company.contact ? '' : ' is-pending'}`} key={company.slug}>
                 <div className="contact-card-head">
                   <a className="contacts-logo" href={companyUrl(company)} aria-label={`Ver ${company.name}`}><img src={company.logo} alt="" loading="lazy" /></a>

@@ -902,3 +902,5 @@ body.intro-lock .hero h1 .word > span, body.intro-lock .hero-content > * { anima
   #cobertura .section-heading { margin-top: 40px; }
   #cobertura .section-heading p { width: auto; margin-top: 26px; }
 }
+#cobertura .subheading { display: block; }
+#cobertura .subheading:after { display: none; }

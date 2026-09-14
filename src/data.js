@@ -25,7 +25,7 @@ export const group = {
     { label: 'Tecnología', icon: 'tech' },
     { label: 'Talento humano', icon: 'people' },
   ],
-  members: ['inversiones-sm', 'auto-repuestos-blessing', 'tecnicentro-didasa', 'distribuidora-mansiago', 'cap-logistics', 'inversiones-marlon'],
+  members: ['inversiones-sm', 'auto-repuestos-blessing', 'tecnicentro-didasa', 'distribuidora-mansiago', 'cap-logistics', 'soluciones-marlons'],
   mission: 'Ser aliados estratégicos del rubro automotriz, brindando productos y servicios de calidad que apoyen el crecimiento de nuestros clientes mediante atención profesional, excelencia operativa y soluciones integrales.',
   vision: 'Ser líderes en el mercado nacional y regional, reconocidos por la excelencia en productos y servicios, altos estándares de calidad, precios competitivos y la expansión continua del grupo.',
 }
@@ -82,7 +82,7 @@ export const companies = [
   { name: 'Japan HN', slug: 'japan-hn', type: 'Repuestos japoneses · B2B', logo: '/logos/japan-hn.jpg', website: 'https://www.japanhn.com', text: 'Calidad japonesa garantizada en marcas y piezas para el mercado hondureño.' },
   { name: 'CAP Logistics', slug: 'cap-logistics', type: 'Logística especializada', logo: '/logos/cap.png', text: 'La cadena de suministro del grupo, conectando cada punto con eficiencia.' },
   {
-    name: 'Inversiones Marlon', slug: 'inversiones-marlon', type: 'Renta de maquinaria pesada', logo: '/logos/marlon.png', website: 'https://solucionesmarlons.com',
+    name: 'Soluciones Marlons', slug: 'soluciones-marlons', type: 'Renta de maquinaria pesada', logo: '/logos/marlon.png', website: 'https://solucionesmarlons.com',
     text: 'Soluciones Marlons: renta de equipo amarillo para excavación, carga y compactación en proyectos de construcción.',
     description: 'Soluciones Marlons ofrece maquinaria y soluciones operativas: renta de equipo amarillo en Honduras para apertura de terreno, movimiento de material y preparación de bases en obra.',
     highlightsTitle: 'Servicios',
