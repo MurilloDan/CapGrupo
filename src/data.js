@@ -1,3 +1,5 @@
+const B = import.meta.env.BASE_URL
+
 export const contact = {
   city: 'Tegucigalpa, Honduras',
   address: 'Bulevar Comunidad Económica Europea, frente a Plaza Aire Frío, Tegucigalpa, Honduras',
@@ -32,7 +34,7 @@ export const group = {
 
 export const companies = [
   {
-    name: 'Inversiones S&M', slug: 'inversiones-sm', type: 'Importación y distribución · B2B', logo: '/logos/sym.jpg', website: 'https://www.inversionessymhn.com',
+    name: 'Inversiones S&M', slug: 'inversiones-sm', type: 'Importación y distribución · B2B', logo: B + 'logos/sym.jpg', website: 'https://www.inversionessymhn.com',
     text: 'Importación y distribución de autopartes con cobertura nacional para talleres, distribuidores y flotillas.',
     description: 'Inversiones S&M es una empresa líder en importación y distribución de autopartes en Honduras, enfocada en el mercado B2B.',
     highlightsTitle: 'Ofrecemos',
@@ -43,7 +45,7 @@ export const companies = [
     contact: { address: 'Bulevar Comunidad Económica Europea, frente a Plaza Aire Frío', phone: '9990-0823', email: 'administracion@inversionessymhn.com' },
   },
   {
-    name: 'Distribuidora Mansiago', slug: 'distribuidora-mansiago', type: 'Lubricantes, fluidos y autopartes · B2B', logo: '/logos/mansiago.jpg', website: 'https://www.mansiago.com',
+    name: 'Distribuidora Mansiago', slug: 'distribuidora-mansiago', type: 'Lubricantes, fluidos y autopartes · B2B', logo: B + 'logos/mansiago.jpg', website: 'https://www.mansiago.com',
     text: 'Lubricantes, fluidos, filtros, baterías y autopartes de calidad con respuesta inmediata.',
     description: 'Distribuidora Mansiago se especializa en lubricantes, fluidos, filtros, baterías y autopartes de calidad.',
     highlightsTitle: 'Nos caracteriza',
@@ -54,7 +56,7 @@ export const companies = [
     contact: { address: 'Bulevar Comunidad Económica Europea, frente a Plaza Aire Frío', phone: '9408-4995', email: 'administracion@mansiago.com' },
   },
   {
-    name: 'Auto Repuestos Blessing', slug: 'auto-repuestos-blessing', type: 'Venta al detalle · B2C', logo: '/logos/blessing.png', website: 'https://autorepuestosblessing.com',
+    name: 'Auto Repuestos Blessing', slug: 'auto-repuestos-blessing', type: 'Venta al detalle · B2C', logo: B + 'logos/blessing.png', website: 'https://autorepuestosblessing.com',
     text: 'Referente nacional en autopartes al detalle: amplia variedad, precios accesibles y servicio a domicilio.',
     description: 'Auto Repuestos Blessing es referente nacional en la venta de autopartes al detalle, reconocido por su amplia variedad, precios accesibles y calidad.',
     highlightsTitle: 'Brindamos',
@@ -67,7 +69,7 @@ export const companies = [
     contact: { address: 'Col. Kennedy, frente al Instituto Técnico Honduras', phone: '3285-0830', email: 'gerencia@autorepuestosblessing.com' },
   },
   {
-    name: 'Tecnicentro DIDASA', slug: 'tecnicentro-didasa', type: 'Instalación y servicio · B2C', logo: '/logos/didasa.jpg',
+    name: 'Tecnicentro DIDASA', slug: 'tecnicentro-didasa', type: 'Instalación y servicio · B2C', logo: B + 'logos/didasa.jpg',
     text: 'Mantenimiento, reparación, instalación y venta de autopartes con técnicos profesionales.',
     description: 'Tecnicentro y Repuestos DIDASA es un centro integral de mantenimiento, reparación, instalación y venta de autopartes.',
     highlightsTitle: 'Nos distingue',
@@ -79,10 +81,10 @@ export const companies = [
     list: ['Cambio de lubricantes y fluidos', 'Cambio de pastillas y zapatas', 'Rectificado de discos y tambores', 'Cambio de clutch', 'Alineamiento y balanceo', 'Limpieza de inyectores', 'Diagnóstico electrónico', 'Mecánica general', 'Carga de A/C', 'Sistema de enfriamiento', 'Rectificado de muñones'],
     contact: { address: 'Anillo Periférico, Villa Nueva (100 m antes del puente peatonal)', phone: '8944-9954', email: 'gerencia@tecdidasa.co' },
   },
-  { name: 'Japan HN', slug: 'japan-hn', type: 'Repuestos japoneses · B2B', logo: '/logos/japan-hn.jpg', website: 'https://www.japanhn.com', text: 'Calidad japonesa garantizada en marcas y piezas para el mercado hondureño.' },
-  { name: 'CAP Logistics', slug: 'cap-logistics', type: 'Logística especializada', logo: '/logos/cap.png', text: 'La cadena de suministro del grupo, conectando cada punto con eficiencia.' },
+  { name: 'Japan HN', slug: 'japan-hn', type: 'Repuestos japoneses · B2B', logo: B + 'logos/japan-hn.jpg', website: 'https://www.japanhn.com', text: 'Calidad japonesa garantizada en marcas y piezas para el mercado hondureño.' },
+  { name: 'CAP Logistics', slug: 'cap-logistics', type: 'Logística especializada', logo: B + 'logos/cap.png', text: 'La cadena de suministro del grupo, conectando cada punto con eficiencia.' },
   {
-    name: 'Soluciones Marlons', slug: 'soluciones-marlons', type: 'Renta de maquinaria pesada', logo: '/logos/marlon.png', website: 'https://solucionesmarlons.com',
+    name: 'Soluciones Marlons', slug: 'soluciones-marlons', type: 'Renta de maquinaria pesada', logo: B + 'logos/marlon.png', website: 'https://solucionesmarlons.com',
     text: 'Soluciones Marlons: renta de equipo amarillo para excavación, carga y compactación en proyectos de construcción.',
     description: 'Soluciones Marlons ofrece maquinaria y soluciones operativas: renta de equipo amarillo en Honduras para apertura de terreno, movimiento de material y preparación de bases en obra.',
     highlightsTitle: 'Servicios',
@@ -109,24 +111,24 @@ export const pillars = [
 ]
 
 export const processes = [
-  { title: 'Venta B2B', phone: '9210-9620', channel: 'Talleres, distribuidores y flotillas', image: '/images/procesos/venta-b2b.jpg', steps: ['Visita del asesor', 'Levantamiento de pedido', 'Confirmación', 'Entrega', 'Facturación'] },
-  { title: 'Compra en mostrador', phone: '9250-7107', channel: 'Cliente final · B2C', image: '/images/procesos/mostrador.jpg', steps: ['Atención personalizada', 'Pago en caja', 'Soporte postventa'] },
-  { title: 'Entrega a domicilio', phone: '9250-7107', channel: 'Pedidos hasta tu puerta', image: '/images/procesos/entrega.jpg', steps: ['Confirmación de pedido', 'Elección del método de pago', 'Entrega', 'Factura'] },
-  { title: 'Devoluciones', channel: 'Según la política vigente', image: '/images/procesos/devoluciones.jpg', reasons: ['Producto defectuoso', 'Error de pedido', 'Incompatibilidad'] },
+  { title: 'Venta B2B', phone: '9210-9620', channel: 'Talleres, distribuidores y flotillas', image: B + 'images/procesos/venta-b2b.jpg', steps: ['Visita del asesor', 'Levantamiento de pedido', 'Confirmación', 'Entrega', 'Facturación'] },
+  { title: 'Compra en mostrador', phone: '9250-7107', channel: 'Cliente final · B2C', image: B + 'images/procesos/mostrador.jpg', steps: ['Atención personalizada', 'Pago en caja', 'Soporte postventa'] },
+  { title: 'Entrega a domicilio', phone: '9250-7107', channel: 'Pedidos hasta tu puerta', image: B + 'images/procesos/entrega.jpg', steps: ['Confirmación de pedido', 'Elección del método de pago', 'Entrega', 'Factura'] },
+  { title: 'Devoluciones', channel: 'Según la política vigente', image: B + 'images/procesos/devoluciones.jpg', reasons: ['Producto defectuoso', 'Error de pedido', 'Incompatibilidad'] },
 ]
 
 export const milestones = [
-  ['2018', 'Fundación', 'Nace Grupo Empresarial CAP con la visión de consolidar el sector automotriz hondureño.', [['Grupo CAP', '/logos/cap.png']]],
-  ['2021', 'Expansión B2B', 'Inversiones S&M y Distribuidora Mansiago inician operaciones a nivel nacional.', [['Inversiones S&M', '/logos/sym.jpg'], ['Distribuidora Mansiago', '/logos/mansiago.jpg']]],
-  ['2022', 'Canal B2C', 'Auto Repuestos Blessing abre sus puertas al público con tiendas de venta al detalle.', [['Auto Repuestos Blessing', '/logos/blessing.png']]],
-  ['2025', 'Servicios', 'Tecnicentro DIDASA se incorpora al grupo con talleres de instalación y mantenimiento.', [['Tecnicentro DIDASA', '/logos/didasa.jpg']]],
-  ['2026', 'Consolidación', 'Más empresas, más talento y cobertura nacional completa.', [['Grupo CAP', '/logos/cap.png']]],
+  ['2018', 'Fundación', 'Nace Grupo Empresarial CAP con la visión de consolidar el sector automotriz hondureño.', [['Grupo CAP', B + 'logos/cap.png']]],
+  ['2021', 'Expansión B2B', 'Inversiones S&M y Distribuidora Mansiago inician operaciones a nivel nacional.', [['Inversiones S&M', B + 'logos/sym.jpg'], ['Distribuidora Mansiago', B + 'logos/mansiago.jpg']]],
+  ['2022', 'Canal B2C', 'Auto Repuestos Blessing abre sus puertas al público con tiendas de venta al detalle.', [['Auto Repuestos Blessing', B + 'logos/blessing.png']]],
+  ['2025', 'Servicios', 'Tecnicentro DIDASA se incorpora al grupo con talleres de instalación y mantenimiento.', [['Tecnicentro DIDASA', B + 'logos/didasa.jpg']]],
+  ['2026', 'Consolidación', 'Más empresas, más talento y cobertura nacional completa.', [['Grupo CAP', B + 'logos/cap.png']]],
 ]
 
 export const gallery = [
-  { src: '/images/equipo-almacen-2.jpg', alt: 'Colaboradores de Grupo CAP reunidos en el almacén', caption: 'Un mismo equipo', layout: 'feature', position: '50% 55%' },
-  { src: '/images/sala-juntas.jpg', alt: 'Equipo administrativo de Grupo CAP en la sala de juntas', caption: 'Sala de juntas', layout: 'wide', position: '50% 60%' },
-  { src: '/images/colaborador.jpg', alt: 'Colaborador de Grupo CAP en su estación de trabajo', caption: 'Compromiso diario', layout: 'wide', position: '60% 40%' },
+  { src: B + 'images/equipo-almacen-2.jpg', alt: 'Colaboradores de Grupo CAP reunidos en el almacén', caption: 'Un mismo equipo', layout: 'feature', position: '50% 55%' },
+  { src: B + 'images/sala-juntas.jpg', alt: 'Equipo administrativo de Grupo CAP en la sala de juntas', caption: 'Sala de juntas', layout: 'wide', position: '50% 60%' },
+  { src: B + 'images/colaborador.jpg', alt: 'Colaborador de Grupo CAP en su estación de trabajo', caption: 'Compromiso diario', layout: 'wide', position: '60% 40%' },
 ]
 
 export const zones = [

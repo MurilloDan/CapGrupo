@@ -5,8 +5,9 @@ import { companies, contact, gallery, group, milestones, pillars, processes, sta
 
 const navItems = [['Nosotros', 'nosotros'], ['Empresas', 'empresas'], ['Cobertura', 'cobertura'], ['Equipo', 'equipo'], ['Trayectoria', 'trayectoria'], ['Contacto', 'contacto']]
 
+const B = import.meta.env.BASE_URL
 const pad = (number) => String(number).padStart(2, '0')
-const companyUrl = (company) => `/empresas/${company.slug}`
+const companyUrl = (company) => `${B}empresas/${company.slug}`
 const telHref = (phone) => `tel:+504${phone.replace(/\D/g, '')}`
 const mapsHref = (address) => `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${address}, Tegucigalpa, Honduras`)}`
 const external = { target: '_blank', rel: 'noreferrer' }
@@ -303,12 +304,12 @@ const pillarIcons = [
 ]
 
 const introSlides = [
-  { src: '/images/intro/01-welmet.jpg', caption: 'Inversiones S&M' },
-  { src: '/images/intro/02-aeromap.jpg', caption: 'Distribuidora Mansiago' },
-  { src: '/images/intro/03-kyb.jpg', caption: 'Japan HN' },
-  { src: '/images/intro/04-didasa.jpg', caption: 'Tecnicentro DIDASA' },
-  { src: '/images/intro/05-tienda.jpg', caption: 'Atención al cliente' },
-  { src: '/images/intro/06-grupo-cap.jpg', caption: 'Un solo grupo' },
+  { src: B + 'images/intro/01-welmet.jpg', caption: 'Inversiones S&M' },
+  { src: B + 'images/intro/02-aeromap.jpg', caption: 'Distribuidora Mansiago' },
+  { src: B + 'images/intro/03-kyb.jpg', caption: 'Japan HN' },
+  { src: B + 'images/intro/04-didasa.jpg', caption: 'Tecnicentro DIDASA' },
+  { src: B + 'images/intro/05-tienda.jpg', caption: 'Atención al cliente' },
+  { src: B + 'images/intro/06-grupo-cap.jpg', caption: 'Un solo grupo' },
 ]
 
 const reducedMotion = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches
@@ -375,7 +376,7 @@ function Intro() {
         <span className="intro-progress"><span style={{ transform: `scaleX(${(index + 1) / introSlides.length})` }} /></span>
       </div>
       <div className="intro-logo">
-        <img src="/logos/cap-intro.png" alt="Grupo CAP" />
+        <img src={B + 'logos/cap-intro.png'} alt="Grupo CAP" />
         <span className="intro-tagline">La movilidad mueve el progreso</span>
       </div>
       <button type="button" className="intro-skip" onClick={() => setPhase('done')}>Saltar intro <span aria-hidden="true">→</span></button>
@@ -408,7 +409,7 @@ function Header({ home = true }) {
   const [active, setActive] = useState('')
   const [open, setOpen] = useState(false)
   const headerRef = useRef(null)
-  const base = home ? '' : '/'
+  const base = home ? '' : B
 
   useEffect(() => {
     let lastY = window.scrollY
@@ -462,7 +463,7 @@ function Header({ home = true }) {
       <div className="nav-inner wrap">
         <a
           className="brand"
-          href={home ? '#inicio' : '/?intro'}
+          href={home ? '#inicio' : `${B}?intro`}
           aria-label="Grupo CAP, ir al inicio"
           onClick={(event) => {
             if (!home) return
@@ -472,8 +473,8 @@ function Header({ home = true }) {
             window.dispatchEvent(new Event('cap:intro'))
           }}
         >
-          <img className="logo-white" src="/logos/cap-blanco.png" alt="" width="112" height="47" />
-          <img className="logo-color" src="/logos/cap.png" alt="" width="112" height="47" />
+          <img className="logo-white" src={B + 'logos/cap-blanco.png'} alt="" width="112" height="47" />
+          <img className="logo-color" src={B + 'logos/cap.png'} alt="" width="112" height="47" />
         </a>
         <nav id="menu-principal" className="nav-links" aria-label="Principal">
           {navItems.map(([label, id]) => <a key={id} href={`${base}#${id}`} className={active === id ? 'is-active' : undefined} aria-current={active === id ? 'location' : undefined} onClick={() => setOpen(false)}>{label}</a>)}
@@ -529,12 +530,12 @@ function SectionLabel({ number, children }) {
 }
 
 function Footer({ home = true }) {
-  const base = home ? '' : '/'
+  const base = home ? '' : B
   return (
     <footer className="footer">
       <div className="footer-inner wrap">
         <div className="footer-brand">
-          <img src="/logos/cap-blanco.png" alt="Grupo CAP" width="130" height="55" loading="lazy" />
+          <img src={B + 'logos/cap-blanco.png'} alt="Grupo CAP" width="130" height="55" loading="lazy" />
           <p>Conglomerado empresarial hondureño dedicado al sector automotriz, con cobertura nacional y un compromiso inquebrantable con la excelencia.</p>
         </div>
         <div className="footer-col"><span className="mini-label">Empresas</span>{companies.map((company) => <a key={company.slug} href={companyUrl(company)}>{company.name}</a>)}</div>
@@ -558,7 +559,7 @@ function CompanyPage({ company }) {
         <section className="detail-hero">
           <div className="detail-hero-inner wrap">
             <div className="detail-copy reveal">
-              <a className="back-link" href="/#empresas"><span aria-hidden="true">←</span> Todas las empresas</a>
+              <a className="back-link" href={B + '#empresas'}><span aria-hidden="true">←</span> Todas las empresas</a>
               <p className="eyebrow">Empresa del Grupo CAP</p>
               <h1><Words>{company.name}</Words></h1>
               <p className="detail-type">{company.type}</p>
@@ -642,7 +643,7 @@ function CompanyPage({ company }) {
             <span className="mini-label">Conoce más</span>
             <h2 className="display"><Words>La movilidad<br /><em>nos conecta.</em></Words></h2>
             <p>Descubre cómo cada empresa del grupo aporta una solución especializada y complementaria para nuestros clientes.</p>
-            <a className="button button-light" href="/#contacto">Contactar a Grupo CAP <span aria-hidden="true">↗</span></a>
+            <a className="button button-light" href={B + '#contacto'}>Contactar a Grupo CAP <span aria-hidden="true">↗</span></a>
           </div>
         </section>
       </main>
@@ -670,7 +671,7 @@ function HomePage() {
             <dl className="hero-data">{stats.slice(0, 3).map((stat) => <div key={stat.label}><dt>{stat.label}</dt><dd>{String(stat.value).padStart(2, '0')}{stat.suffix}</dd></div>)}</dl>
           </div>
           <div className="hero-media">
-            <img src="/images/equipo-grupo-cap.jpg" alt="Equipo de Grupo CAP frente al logo corporativo" fetchPriority="high" />
+            <img src={B + 'images/equipo-grupo-cap.jpg'} alt="Equipo de Grupo CAP frente al logo corporativo" fetchPriority="high" />
             <span className="hud-scan" aria-hidden="true" />
             <span className="hud hud-tl" aria-hidden="true" /><span className="hud hud-tr" aria-hidden="true" /><span className="hud hud-bl" aria-hidden="true" /><span className="hud hud-br" aria-hidden="true" />
             <p className="hud-tag" aria-hidden="true"><span className="status-dot" />Grupo CAP // Equipo</p>
@@ -705,7 +706,7 @@ function HomePage() {
               <a className="text-link" href="#pilares">Nuestra forma de hacer las cosas <span aria-hidden="true">↗</span></a>
             </div>
             <figure className="about-media reveal">
-              <img src="/images/equipo-oficina.jpg" alt="Parte del equipo de Grupo CAP en las oficinas corporativas" loading="lazy" />
+              <img src={B + 'images/equipo-oficina.jpg'} alt="Parte del equipo de Grupo CAP en las oficinas corporativas" loading="lazy" />
               <figcaption><strong>160+</strong><span>Colaboradores comprometidos</span></figcaption>
             </figure>
           </div>
@@ -730,7 +731,7 @@ function HomePage() {
             <article className="reveal"><span className="mini-label">Nuestra visión</span><p>{group.vision}</p></article>
           </div>
           <blockquote className="belief reveal"><p>En CAP creemos que <em>la movilidad mueve el progreso</em>, por eso trabajamos para garantizar que cada vehículo en Honduras tenga acceso a repuestos y servicios confiables, seguros y de alto rendimiento.</p></blockquote>
-          <figure className="purpose-photo reveal"><img src="/images/colaboradora.png" alt="Colaboradora de Grupo CAP con tableta en mano" loading="lazy" /></figure>
+          <figure className="purpose-photo reveal"><img src={B + 'images/colaboradora.png'} alt="Colaboradora de Grupo CAP con tableta en mano" loading="lazy" /></figure>
           </div>
         </section>
 
@@ -739,7 +740,7 @@ function HomePage() {
             <SectionLabel number="02">Estrategia corporativa</SectionLabel>
             <div className="section-heading reveal"><h2 className="display"><Words>La dirección<br /><em>es clara.</em></Words></h2><p>Cinco pilares que convierten nuestra visión en decisiones, acciones y resultados.</p></div>
             <div className="pillar-hive">
-              <div className="hex hex-core reveal"><div className="hex-inner"><img src="/logos/cap.png" alt="Grupo CAP" /></div></div>
+              <div className="hex hex-core reveal"><div className="hex-inner"><img src={B + 'logos/cap.png'} alt="Grupo CAP" /></div></div>
               <div className="hex hex-summary hex-pos-6 reveal" aria-hidden="true"><div className="hex-inner"><strong>{pad(pillars.length)}</strong><span>Pilares estratégicos</span></div></div>
               {pillars.map(([title, text], index) => (
                 <article className={`hex hex-pillar hex-pos-${index + 1} reveal`} key={title}>
@@ -806,7 +807,7 @@ function HomePage() {
         </section>
 
         <section className="future">
-          <img className="future-image" src="/images/equipo-almacen.jpg" alt="" loading="lazy" />
+          <img className="future-image" src={B + 'images/equipo-almacen.jpg'} alt="" loading="lazy" />
           <div className="future-copy wrap reveal">
             <span className="mini-label">Visión de futuro</span>
             <h2 className="display"><Words>Construimos hoy<br />el sector de <em>mañana.</em></Words></h2>
@@ -820,7 +821,7 @@ function HomePage() {
           <div className="contact-grid">
             <figure className="contact-photo reveal">
               <span className="contact-photo-hex" aria-hidden="true" />
-              <img src="/images/colaborador-carga.png" alt="Colaborador de Grupo CAP transportando cajas con carretilla" loading="lazy" />
+              <img src={B + 'images/colaborador-carga.png'} alt="Colaborador de Grupo CAP transportando cajas con carretilla" loading="lazy" />
               <figcaption className="contact-photo-tag"><span className="status-dot" aria-hidden="true" />Cobertura nacional</figcaption>
             </figure>
             <div className="contact-intro reveal">
@@ -883,9 +884,9 @@ function HomePage() {
             ))}
           </ul>
           <div className="careers reveal">
-            <img className="careers-mark" src="/logos/cap-intro.png" alt="" aria-hidden="true" loading="lazy" />
+            <img className="careers-mark" src={B + 'logos/cap-intro.png'} alt="" aria-hidden="true" loading="lazy" />
             <div className="careers-copy">
-              <img className="careers-logo" src="/logos/cap-intro.png" alt="Grupo CAP" loading="lazy" />
+              <img className="careers-logo" src={B + 'logos/cap-intro.png'} alt="Grupo CAP" loading="lazy" />
               <span className="mini-label">Talento CAP</span>
               <h3><Words>¿Deseas trabajar con nosotros?</Words></h3>
               <p>Súmate a un equipo que impulsa la movilidad en Honduras. Consulta nuestras vacantes disponibles y conoce más de nuestra cultura en LinkedIn.</p>
