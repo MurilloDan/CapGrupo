@@ -82,11 +82,11 @@ const socials = [
   { key: 'tiktok', label: 'TikTok', icon: <path d="M14 3v11.5a3.5 3.5 0 1 1-3.5-3.5M14 3c.4 2.6 2.2 4.4 5 4.6" /> },
 ]
 
-function SocialLinks({ className = '', email = 'grupocap@cap.hn' }) {
+function SocialLinks({ className = '', email = 'grupocap@cap.hn', links = contact, owner = 'Grupo CAP' }) {
   return (
     <ul className={`social-links ${className}`}>
-      {socials.map(({ key, label, icon }) => (
-        <li key={key}><a href={contact[key]} {...external} aria-label={`${label} de Grupo CAP`} title={label}><svg viewBox="0 0 24 24" aria-hidden="true">{icon}</svg></a></li>
+      {socials.filter(({ key }) => links[key]).map(({ key, label, icon }) => (
+        <li key={key}><a href={links[key]} {...external} aria-label={`${label} de ${owner}`} title={label}><svg viewBox="0 0 24 24" aria-hidden="true">{icon}</svg></a></li>
       ))}
       {email && <li><a href={`mailto:${email}`} aria-label={`Correo de Grupo CAP: ${email}`} title={email}><svg viewBox="0 0 24 24" aria-hidden="true">{contactRowIcons.mail}</svg></a></li>}
     </ul>
@@ -513,6 +513,8 @@ const statIcons = {
   Colaboradores: <><circle cx="9" cy="8" r="3.5" /><path d="M2.5 20a6.5 6.5 0 0 1 13 0M16 4.5a3.5 3.5 0 0 1 0 7M18 14.5a6.5 6.5 0 0 1 3.5 5.5" /></>,
   'Áreas centralizadas': <><rect x="3" y="3" width="7" height="7" rx="1" /><rect x="14" y="3" width="7" height="7" rx="1" /><rect x="3" y="14" width="7" height="7" rx="1" /><rect x="14" y="14" width="7" height="7" rx="1" /></>,
   'Años consolidando': <><rect x="3" y="5" width="18" height="16" rx="2" /><path d="M3 10h18M8 3v4M16 3v4M8 15h3" /></>,
+  Departamentos: <><rect x="9" y="3" width="6" height="5" rx="1" /><rect x="3" y="16" width="6" height="5" rx="1" /><rect x="15" y="16" width="6" height="5" rx="1" /><path d="M12 8v4M6 16v-4h12v4" /></>,
+  Países: <><circle cx="12" cy="12" r="9" /><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18" /></>,
   default: <circle cx="12" cy="12" r="8" />,
 }
 
@@ -917,6 +919,7 @@ function HomePage() {
                     <strong>{company.name}</strong>
                     <span className="contact-card-type">{company.type.split(' · ')[0]}</span>
                   </div>
+                  {company.socials && <SocialLinks className="is-card" links={company.socials} owner={company.name} email={null} />}
                 </div>
                 <ul className="contact-rows">
                   {company.contact ? (

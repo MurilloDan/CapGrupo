@@ -43,6 +43,7 @@ export const companies = [
     mission: 'Ser el socio estratégico del sector automotriz, ofreciendo autopartes de alta calidad, precios competitivos y asesoría especializada que impulse el crecimiento de nuestros clientes.',
     vision: 'Consolidarnos como la distribuidora de autopartes más confiable y reconocida del país, destacando por nuestro servicio excepcional, innovación constante y compromiso con el desarrollo automotriz.',
     contact: { address: 'Bulevar Comunidad Económica Europea, frente a Plaza Aire Frío', phone: '9990-0823', email: 'administracion@inversionessymhn.com' },
+    socials: { facebook: 'https://www.facebook.com/invsym/', instagram: 'https://www.instagram.com/inversiones.sym_hn/', tiktok: 'https://www.tiktok.com/@inversionessym' },
   },
   {
     name: 'Distribuidora Mansiago', slug: 'distribuidora-mansiago', type: 'Lubricantes, fluidos y autopartes · B2B', logo: B + 'logos/mansiago.jpg', website: 'https://www.mansiago.com',
@@ -54,6 +55,7 @@ export const companies = [
     mission: 'Revolucionar la industria automotriz hondureña, garantizando el máximo rendimiento de cada vehículo mediante productos de alta calidad y un servicio al cliente inigualable.',
     vision: 'Convertirnos en el líder indiscutible de la industria de repuestos en Honduras, estableciendo el estándar de calidad, asequibilidad y satisfacción del cliente.',
     contact: { address: 'Bulevar Comunidad Económica Europea, frente a Plaza Aire Frío', phone: '9408-4995', email: 'administracion@mansiago.com' },
+    socials: { facebook: 'https://www.facebook.com/distribuidoramansiago', instagram: 'https://www.instagram.com/distribuidoramansiago', tiktok: 'https://www.tiktok.com/@distribuidoramansiago' },
   },
   {
     name: 'Auto Repuestos Blessing', slug: 'auto-repuestos-blessing', type: 'Venta al detalle · B2C', logo: B + 'logos/blessing.png', website: 'https://autorepuestosblessing.com',
@@ -67,6 +69,7 @@ export const companies = [
     listTitle: 'Principales líneas de venta',
     list: ['Lubricantes', 'Filtros', 'Fricciones', 'Dirección', 'Amortiguadores', 'Motores', 'Embragues', 'Soportes'],
     contact: { address: 'Col. Kennedy, frente al Instituto Técnico Honduras', phone: '3285-0830', email: 'gerencia@autorepuestosblessing.com' },
+    socials: { facebook: 'https://www.facebook.com/arsblessing/', instagram: 'https://www.instagram.com/autorepuestosblessing/', tiktok: 'https://www.tiktok.com/@autorepuestosblessing' },
   },
   {
     name: 'Tecnicentro DIDASA', slug: 'tecnicentro-didasa', type: 'Instalación y servicio · B2C', logo: B + 'logos/didasa.jpg',
@@ -80,6 +83,7 @@ export const companies = [
     listTitle: 'Servicios principales',
     list: ['Cambio de lubricantes y fluidos', 'Cambio de pastillas y zapatas', 'Rectificado de discos y tambores', 'Cambio de clutch', 'Alineamiento y balanceo', 'Limpieza de inyectores', 'Diagnóstico electrónico', 'Mecánica general', 'Carga de A/C', 'Sistema de enfriamiento', 'Rectificado de muñones'],
     contact: { address: 'Anillo Periférico, Villa Nueva (100 m antes del puente peatonal)', phone: '8944-9954', email: 'gerencia@tecdidasa.co' },
+    socials: { facebook: 'https://www.facebook.com/tecdidasa/', instagram: 'https://www.instagram.com/tecnicentro_didasa/' },
   },
   { name: 'Japan HN', slug: 'japan-hn', type: 'Repuestos japoneses · B2B', logo: B + 'logos/japan-hn.jpg', website: 'https://www.japanhn.com', text: 'Calidad japonesa garantizada en marcas y piezas para el mercado hondureño.' },
   { name: 'CAP Logistics', slug: 'cap-logistics', type: 'Logística especializada', logo: B + 'logos/cap.png', text: 'La cadena de suministro del grupo, conectando cada punto con eficiencia.', contact: { address: 'Bulevar Comunidad Económica Europea, frente a Plaza Aire Frío', email: 'grupocap@cap.hn' } },
@@ -100,6 +104,8 @@ export const stats = [
   { value: 160, suffix: '+', label: 'Colaboradores' },
   { value: 6, label: 'Áreas centralizadas' },
   { value: 8, label: 'Años consolidando' },
+  { value: 22, label: 'Departamentos' },
+  { value: 2, label: 'Países' },
 ]
 
 export const pillars = [
