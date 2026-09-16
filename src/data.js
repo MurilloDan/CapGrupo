@@ -1,4 +1,4 @@
-const B = import.meta.env.BASE_URL
+const B = import.meta.env?.BASE_URL ?? '/'
 
 export const contact = {
   city: 'Tegucigalpa, Honduras',
@@ -22,9 +22,13 @@ export const group = {
   sharedServices: [
     { label: 'Administración', icon: 'admin' },
     { label: 'Finanzas', icon: 'finance' },
+    { label: 'Contabilidad', icon: 'accounting' },
+    { label: 'Compras', icon: 'purchasing' },
     { label: 'Legal', icon: 'legal' },
     { label: 'Logística', icon: 'logistics' },
     { label: 'Tecnología', icon: 'tech' },
+    { label: 'Procesos', icon: 'processes' },
+    { label: 'Mercadeo', icon: 'marketing' },
     { label: 'Talento humano', icon: 'people' },
   ],
   members: ['inversiones-sm', 'auto-repuestos-blessing', 'tecnicentro-didasa', 'distribuidora-mansiago', 'cap-logistics', 'soluciones-marlons'],
@@ -43,7 +47,7 @@ export const companies = [
     mission: 'Ser el socio estratégico del sector automotriz, ofreciendo autopartes de alta calidad, precios competitivos y asesoría especializada que impulse el crecimiento de nuestros clientes.',
     vision: 'Consolidarnos como la distribuidora de autopartes más confiable y reconocida del país, destacando por nuestro servicio excepcional, innovación constante y compromiso con el desarrollo automotriz.',
     contact: { address: 'Bulevar Comunidad Económica Europea, frente a Plaza Aire Frío', phone: '9990-0823', email: 'administracion@inversionessymhn.com' },
-    socials: { facebook: 'https://www.facebook.com/invsym/', instagram: 'https://www.instagram.com/inversiones.sym_hn/', tiktok: 'https://www.tiktok.com/@inversionessym' },
+    socials: { facebook: 'https://www.facebook.com/invsym/', instagram: 'https://www.instagram.com/inversiones.sym_hn/', tiktok: 'https://www.tiktok.com/@inversionessym', whatsapp: 'https://wa.me/50492109620' },
   },
   {
     name: 'Distribuidora Mansiago', slug: 'distribuidora-mansiago', type: 'Lubricantes, fluidos y autopartes · B2B', logo: B + 'logos/mansiago.jpg', website: 'https://www.mansiago.com',
@@ -55,7 +59,7 @@ export const companies = [
     mission: 'Revolucionar la industria automotriz hondureña, garantizando el máximo rendimiento de cada vehículo mediante productos de alta calidad y un servicio al cliente inigualable.',
     vision: 'Convertirnos en el líder indiscutible de la industria de repuestos en Honduras, estableciendo el estándar de calidad, asequibilidad y satisfacción del cliente.',
     contact: { address: 'Bulevar Comunidad Económica Europea, frente a Plaza Aire Frío', phone: '9408-4995', email: 'administracion@mansiago.com' },
-    socials: { facebook: 'https://www.facebook.com/distribuidoramansiago', instagram: 'https://www.instagram.com/distribuidoramansiago', tiktok: 'https://www.tiktok.com/@distribuidoramansiago' },
+    socials: { facebook: 'https://www.facebook.com/distribuidoramansiago', instagram: 'https://www.instagram.com/distribuidoramansiago', tiktok: 'https://www.tiktok.com/@distribuidoramansiago', whatsapp: 'https://wa.me/50495697549' },
   },
   {
     name: 'Auto Repuestos Blessing', slug: 'auto-repuestos-blessing', type: 'Venta al detalle · B2C', logo: B + 'logos/blessing.png', website: 'https://autorepuestosblessing.com',
@@ -69,10 +73,10 @@ export const companies = [
     listTitle: 'Principales líneas de venta',
     list: ['Lubricantes', 'Filtros', 'Fricciones', 'Dirección', 'Amortiguadores', 'Motores', 'Embragues', 'Soportes'],
     contact: { address: 'Col. Kennedy, frente al Instituto Técnico Honduras', phone: '3285-0830', email: 'gerencia@autorepuestosblessing.com' },
-    socials: { facebook: 'https://www.facebook.com/arsblessing/', instagram: 'https://www.instagram.com/autorepuestosblessing/', tiktok: 'https://www.tiktok.com/@autorepuestosblessing' },
+    socials: { facebook: 'https://www.facebook.com/arsblessing/', instagram: 'https://www.instagram.com/autorepuestosblessing/', tiktok: 'https://www.tiktok.com/@autorepuestosblessing', whatsapp: 'https://wa.me/50492507107' },
   },
   {
-    name: 'Tecnicentro DIDASA', slug: 'tecnicentro-didasa', type: 'Instalación y servicio · B2C', logo: B + 'logos/didasa.jpg',
+    name: 'Tecnicentro DIDASA', slug: 'tecnicentro-didasa', type: 'Instalación y servicio · B2C', logo: B + 'logos/didasa.jpg', website: 'https://tecdidasa.com',
     text: 'Mantenimiento, reparación, instalación y venta de autopartes con técnicos profesionales.',
     description: 'Tecnicentro y Repuestos DIDASA es un centro integral de mantenimiento, reparación, instalación y venta de autopartes.',
     highlightsTitle: 'Nos distingue',
@@ -83,10 +87,15 @@ export const companies = [
     listTitle: 'Servicios principales',
     list: ['Cambio de lubricantes y fluidos', 'Cambio de pastillas y zapatas', 'Rectificado de discos y tambores', 'Cambio de clutch', 'Alineamiento y balanceo', 'Limpieza de inyectores', 'Diagnóstico electrónico', 'Mecánica general', 'Carga de A/C', 'Sistema de enfriamiento', 'Rectificado de muñones'],
     contact: { address: 'Anillo Periférico, Villa Nueva (100 m antes del puente peatonal)', phone: '8944-9954', email: 'gerencia@tecdidasa.co' },
-    socials: { facebook: 'https://www.facebook.com/tecdidasa/', instagram: 'https://www.instagram.com/tecnicentro_didasa/' },
+    socials: { facebook: 'https://www.facebook.com/tecnicentrodidasa1', instagram: 'https://www.instagram.com/tecnicentro_didasa/', tiktok: 'https://www.tiktok.com/@didasahn' },
   },
-  { name: 'Japan HN', slug: 'japan-hn', type: 'Repuestos japoneses · B2B', logo: B + 'logos/japan-hn.jpg', website: 'https://www.japanhn.com', text: 'Calidad japonesa garantizada en marcas y piezas para el mercado hondureño.' },
-  { name: 'CAP Logistics', slug: 'cap-logistics', type: 'Logística especializada', logo: B + 'logos/cap.png', text: 'La cadena de suministro del grupo, conectando cada punto con eficiencia.', contact: { address: 'Bulevar Comunidad Económica Europea, frente a Plaza Aire Frío', email: 'grupocap@cap.hn' } },
+  { name: 'Japan HN', slug: 'japan-hn', type: 'Repuestos japoneses · B2B', logo: B + 'logos/japan-hn.jpg', website: 'https://www.japanhn.com', text: 'Calidad japonesa garantizada en marcas y piezas para el mercado hondureño.',
+    socials: { facebook: 'https://www.facebook.com/rjapanhn/', instagram: 'https://www.instagram.com/japanhn_/', tiktok: 'https://www.tiktok.com/@japan.hn' },
+  },
+  { name: 'CAP Logistics', slug: 'cap-logistics', type: 'Logística especializada', logo: B + 'logos/cap.png', text: 'La cadena de suministro del grupo, conectando cada punto con eficiencia.', contact: { address: 'Bulevar Comunidad Económica Europea, frente a Plaza Aire Frío', email: 'grupocap@cap.hn' },
+    // CAP Logistics no tiene redes propias: usa las de Grupo CAP.
+    socials: { facebook: contact.facebook, instagram: contact.instagram, tiktok: contact.tiktok, whatsapp: contact.whatsapp },
+  },
   {
     name: 'Soluciones Marlons', slug: 'soluciones-marlons', type: 'Renta de maquinaria pesada', logo: B + 'logos/marlon.png', website: 'https://solucionesmarlons.com',
     text: 'Soluciones Marlons: renta de equipo amarillo para excavación, carga y compactación en proyectos de construcción.',
@@ -96,16 +105,22 @@ export const companies = [
     listTitle: 'Equipos disponibles',
     list: ['Miniexcavadora', 'Excavadora mediana', 'Excavadora de mayor capacidad', 'Tractor', 'Equipo de compactación'],
     contact: { phone: '9408-4995', email: 'gerencia@solucionesmarlons.com' },
+    socials: { whatsapp: 'https://wa.me/50494084995' },
   },
 ]
 
 export const stats = [
   { value: companies.length, label: 'Empresas del grupo' },
   { value: 160, suffix: '+', label: 'Colaboradores' },
-  { value: 6, label: 'Áreas centralizadas' },
+  { value: group.sharedServices.length, label: 'Áreas centralizadas' },
   { value: 8, label: 'Años consolidando' },
   { value: 22, label: 'Departamentos' },
   { value: 2, label: 'Países' },
+]
+
+export const downloads = [
+  { title: 'Perfil corporativo', text: 'Identidad, empresas, misión y cobertura', format: 'PDF', size: '1 MB', href: B + 'material/perfil-corporativo-grupo-cap.pdf' },
+  { title: 'Resumen de Grupo CAP', text: 'Ficha visual en alta calidad', format: 'PNG', size: '0.9 MB', href: B + 'material/resumen-grupo-cap.png' },
 ]
 
 export const pillars = [

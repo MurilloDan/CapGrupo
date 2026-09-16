@@ -1,7 +1,7 @@
 import { Children, cloneElement, isValidElement, useEffect, useRef, useState } from 'react'
 import './App.css'
 import './routes.css'
-import { companies, contact, gallery, group, milestones, pillars, processes, stats, zones } from './data'
+import { companies, contact, downloads, gallery, group, milestones, pillars, processes, stats, zones } from './data'
 
 const navItems = [['Nosotros', 'nosotros'], ['Empresas', 'empresas'], ['Cobertura', 'cobertura'], ['Equipo', 'equipo'], ['Trayectoria', 'trayectoria'], ['Contacto', 'contacto']]
 
@@ -81,11 +81,12 @@ const socials = [
   { key: 'facebook', label: 'Facebook', icon: <path d="M14 8h3V4h-3a4 4 0 0 0-4 4v2H7v4h3v6h4v-6h3l1-4h-4V8.5a.5.5 0 0 1 .5-.5z" /> },
   { key: 'tiktok', label: 'TikTok', icon: <path d="M14 3v11.5a3.5 3.5 0 1 1-3.5-3.5M14 3c.4 2.6 2.2 4.4 5 4.6" /> },
 ]
+const companySocials = [...socials, { key: 'whatsapp', label: 'WhatsApp', icon: <><path d="M3.5 20.5l1.3-4.2A8.5 8.5 0 1 1 8 19.3z" /><path d="M9 8.5c0 3.5 3 6.5 6.5 6.5l1-1.6-2.2-1-1 .9a4.5 4.5 0 0 1-2.1-2.1l.9-1-1-2.2z" /></> }]
 
-function SocialLinks({ className = '', email = 'grupocap@cap.hn', links = contact, owner = 'Grupo CAP' }) {
+function SocialLinks({ className = '', email = 'grupocap@cap.hn', links = contact, owner = 'Grupo CAP', networks = socials }) {
   return (
     <ul className={`social-links ${className}`}>
-      {socials.filter(({ key }) => links[key]).map(({ key, label, icon }) => (
+      {networks.filter(({ key }) => links[key]).map(({ key, label, icon }) => (
         <li key={key}><a href={links[key]} {...external} aria-label={`${label} de ${owner}`} title={label}><svg viewBox="0 0 24 24" aria-hidden="true">{icon}</svg></a></li>
       ))}
       {email && <li><a href={`mailto:${email}`} aria-label={`Correo de Grupo CAP: ${email}`} title={email}><svg viewBox="0 0 24 24" aria-hidden="true">{contactRowIcons.mail}</svg></a></li>}
@@ -160,6 +161,7 @@ function CompanyExplorer() {
               <a className="button button-red" href={companyUrl(current)}>Conocer más <span aria-hidden="true">→</span></a>
               {current.website && <a className="button button-outline" href={current.website} {...external}>Sitio web <span aria-hidden="true">↗</span></a>}
             </div>
+            {current.socials && <div className="explorer-social"><span className="mini-label">Síguenos</span><SocialLinks className="is-card" links={current.socials} owner={current.name} networks={companySocials} email={null} /></div>}
           </div>
         </div>
       </article>
@@ -218,6 +220,10 @@ const serviceIcons = {
   legal: <><path d="M12 3v18M7 21h10M5 7h14M5 7l-3 7a3 3 0 0 0 6 0zM19 7l-3 7a3 3 0 0 0 6 0z" /></>,
   logistics: <><path d="M21 8l-9-5-9 5v8l9 5 9-5z" /><path d="M3 8l9 5 9-5M12 13v8M7.5 5.5l9 5" /></>,
   tech: <><circle cx="12" cy="12" r="3" /><path d="M12 2v3M12 19v3M4.9 4.9 7 7M17 17l2.1 2.1M2 12h3M19 12h3M4.9 19.1 7 17M17 7l2.1-2.1" /></>,
+  accounting: <><rect x="5" y="2" width="14" height="20" rx="2" /><path d="M8 6h8M8 11h.01M12 11h.01M16 11h.01M8 15h.01M12 15h.01M16 15v3M8 18h.01M12 18h.01" /></>,
+  purchasing: <><circle cx="9" cy="20" r="1.3" /><circle cx="18" cy="20" r="1.3" /><path d="M2 3h3l2.6 12.4a2 2 0 0 0 2 1.6h8.2a2 2 0 0 0 2-1.5L21 8H6" /></>,
+  processes: <><circle cx="6" cy="6" r="3" /><circle cx="18" cy="18" r="3" /><path d="M9 6h6a3 3 0 0 1 3 3v6M15 18H9a3 3 0 0 1-3-3V9" /></>,
+  marketing: <><path d="M3 10v4a1 1 0 0 0 1 1h3l6 5V4L7 9H4a1 1 0 0 0-1 1zM17 8a5 5 0 0 1 0 8M20 5a9 9 0 0 1 0 14" /></>,
   people: <><circle cx="9" cy="8" r="3.5" /><path d="M2.5 20a6.5 6.5 0 0 1 13 0M16 4.5a3.5 3.5 0 0 1 0 7M18 14.5a6.5 6.5 0 0 1 3.5 5.5" /></>,
 }
 
@@ -630,6 +636,7 @@ function CompanyPage({ company }) {
                   ? <a className="button button-ghost" href={telHref(company.contact.phone)}>Llamar {company.contact.phone} <span aria-hidden="true">↗</span></a>
                   : <a className="button button-ghost" href={contact.whatsapp} {...external}>Contactar <span aria-hidden="true">↗</span></a>}
               </div>
+              {company.socials && <div className="detail-social"><span className="mini-label">Síguenos</span><SocialLinks className="is-dark" links={company.socials} owner={company.name} networks={companySocials} email={null} /></div>}
             </div>
             <div className="detail-logo reveal"><img src={company.logo} alt={`Logo de ${company.name}`} /></div>
           </div>
@@ -919,7 +926,7 @@ function HomePage() {
                     <strong>{company.name}</strong>
                     <span className="contact-card-type">{company.type.split(' · ')[0]}</span>
                   </div>
-                  {company.socials && <SocialLinks className="is-card" links={company.socials} owner={company.name} email={null} />}
+                  {company.socials && <SocialLinks className="is-card" links={company.socials} owner={company.name} networks={companySocials} email={null} />}
                 </div>
                 <ul className="contact-rows">
                   {company.contact ? (
@@ -962,6 +969,27 @@ function HomePage() {
                 LinkedIn <span aria-hidden="true">↗</span>
               </a>
             </div>
+          </div>
+        </section>
+
+        <section className="downloads" id="material">
+          <div className="section wrap downloads-inner">
+            <div className="downloads-copy reveal">
+              <span className="mini-label">Conoce más</span>
+              <h2 className="display"><Words>Material corporativo<br /><em>para llevar.</em></Words></h2>
+              <p>Descarga una introducción formal al grupo o un resumen visual para consultarlo cuando lo necesites.</p>
+            </div>
+            <ul className="downloads-list">
+              {downloads.map((item) => (
+                <li className="reveal" key={item.href}>
+                  <a className="download-card" href={item.href} download>
+                    <span className="download-format">{item.format}</span>
+                    <span className="download-text"><strong>{item.title}</strong><small>{item.text} · {item.size}</small></span>
+                    <svg className="download-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v11M7 10l5 5 5-5M5 20h14" /></svg>
+                  </a>
+                </li>
+              ))}
+            </ul>
           </div>
         </section>
       </main>
