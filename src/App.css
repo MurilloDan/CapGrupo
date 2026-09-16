@@ -540,6 +540,13 @@ body.menu-open { overflow: hidden; }
 .footer-col .mini-label { margin-bottom: 6px; color: rgba(255, 255, 255, .7); }
 .footer-col a { color: rgba(255, 255, 255, .88); font-size: 14px; transition: color .2s; }
 .footer-col a:hover { color: var(--red-bright); }
+.back-to-top { position: fixed; right: 24px; bottom: 24px; z-index: 40; display: grid; place-items: center; width: 48px; height: 48px; border: 1px solid rgba(255, 255, 255, .35); background: var(--ink); color: #fff; box-shadow: 0 8px 24px rgba(0, 0, 0, .22); opacity: 0; visibility: hidden; transform: translateY(12px); transition: opacity .3s, visibility .3s, transform .3s, background .25s; }
+.back-to-top.is-visible { opacity: 1; visibility: visible; transform: none; }
+.back-to-top:hover { background: var(--red); }
+.back-to-top svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; transition: transform .25s; }
+.back-to-top:hover svg { transform: translateY(-3px); }
+@media (max-width: 1360px) { .footer { padding-bottom: 88px; } }
+@media (max-width: 640px) { .back-to-top { right: 16px; bottom: 16px; width: 44px; height: 44px; } }
 .footer-bottom { grid-column: 1 / -1; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px; margin-top: 24px; padding-top: 22px; border-top: 1px solid var(--dark-line); color: rgba(255, 255, 255, .7); font: 600 12px var(--sans); }
 
 @media (prefers-reduced-motion: reduce) { .hero-media img, .status-dot { animation: none; } .hud-scan { display: none; } }

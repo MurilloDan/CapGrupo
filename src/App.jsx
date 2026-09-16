@@ -82,12 +82,13 @@ const socials = [
   { key: 'tiktok', label: 'TikTok', icon: <path d="M14 3v11.5a3.5 3.5 0 1 1-3.5-3.5M14 3c.4 2.6 2.2 4.4 5 4.6" /> },
 ]
 
-function SocialLinks({ className = '' }) {
+function SocialLinks({ className = '', email = 'grupocap@cap.hn' }) {
   return (
     <ul className={`social-links ${className}`}>
       {socials.map(({ key, label, icon }) => (
         <li key={key}><a href={contact[key]} {...external} aria-label={`${label} de Grupo CAP`} title={label}><svg viewBox="0 0 24 24" aria-hidden="true">{icon}</svg></a></li>
       ))}
+      {email && <li><a href={`mailto:${email}`} aria-label={`Correo de Grupo CAP: ${email}`} title={email}><svg viewBox="0 0 24 24" aria-hidden="true">{contactRowIcons.mail}</svg></a></li>}
     </ul>
   )
 }
@@ -557,6 +558,34 @@ function SectionLabel({ number, children }) {
   return <div className="section-label reveal"><span>{number}</span><span>{children}</span></div>
 }
 
+function BackToTop({ home = true }) {
+  const [visible, setVisible] = useState(false)
+
+  useEffect(() => {
+    const onScroll = () => setVisible(window.scrollY > 600)
+    onScroll()
+    window.addEventListener('scroll', onScroll, { passive: true })
+    return () => window.removeEventListener('scroll', onScroll)
+  }, [])
+
+  return (
+    <a
+      className={`back-to-top${visible ? ' is-visible' : ''}`}
+      href={home ? '#inicio' : `${B}?intro`}
+      aria-label="Subir al inicio"
+      tabIndex={visible ? undefined : -1}
+      onClick={(event) => {
+        if (!home) return
+        event.preventDefault()
+        window.scrollTo({ top: 0, behavior: 'instant' })
+        window.dispatchEvent(new Event('cap:intro'))
+      }}
+    >
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 19V5M5 12l7-7 7 7" /></svg>
+    </a>
+  )
+}
+
 function Footer({ home = true }) {
   const base = home ? '' : B
   return (
@@ -568,9 +597,10 @@ function Footer({ home = true }) {
         </div>
         <div className="footer-col"><span className="mini-label">Empresas</span>{companies.map((company) => <a key={company.slug} href={companyUrl(company)}>{company.name}</a>)}</div>
         <div className="footer-col"><span className="mini-label">Navegación</span>{navItems.map(([label, id]) => <a key={id} href={`${base}#${id}`}>{label}</a>)}</div>
-        <div className="footer-col"><span className="mini-label">Síguenos</span><SocialLinks className="is-dark" /><a href={contact.instagram} {...external}>Instagram ↗</a><a href={contact.facebook} {...external}>Facebook ↗</a><a href={contact.tiktok} {...external}>TikTok ↗</a><a href={contact.whatsapp} {...external}>WhatsApp ↗</a></div>
+        <div className="footer-col"><span className="mini-label">Síguenos</span><SocialLinks className="is-dark" /><a href={contact.instagram} {...external}>Instagram ↗</a><a href={contact.facebook} {...external}>Facebook ↗</a><a href={contact.tiktok} {...external}>TikTok ↗</a><a href={contact.whatsapp} {...external}>WhatsApp ↗</a><a href="mailto:grupocap@cap.hn">grupocap@cap.hn</a></div>
         <div className="footer-bottom"><span>© {new Date().getFullYear()} Grupo Empresarial CAP</span><span>{contact.city}</span></div>
       </div>
+      <BackToTop home={home} />
     </footer>
   )
 }

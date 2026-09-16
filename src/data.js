@@ -82,7 +82,7 @@ export const companies = [
     contact: { address: 'Anillo Periférico, Villa Nueva (100 m antes del puente peatonal)', phone: '8944-9954', email: 'gerencia@tecdidasa.co' },
   },
   { name: 'Japan HN', slug: 'japan-hn', type: 'Repuestos japoneses · B2B', logo: B + 'logos/japan-hn.jpg', website: 'https://www.japanhn.com', text: 'Calidad japonesa garantizada en marcas y piezas para el mercado hondureño.' },
-  { name: 'CAP Logistics', slug: 'cap-logistics', type: 'Logística especializada', logo: B + 'logos/cap.png', text: 'La cadena de suministro del grupo, conectando cada punto con eficiencia.', contact: { email: 'grupocap@cap.hn' } },
+  { name: 'CAP Logistics', slug: 'cap-logistics', type: 'Logística especializada', logo: B + 'logos/cap.png', text: 'La cadena de suministro del grupo, conectando cada punto con eficiencia.', contact: { address: 'Bulevar Comunidad Económica Europea, frente a Plaza Aire Frío', email: 'grupocap@cap.hn' } },
   {
     name: 'Soluciones Marlons', slug: 'soluciones-marlons', type: 'Renta de maquinaria pesada', logo: B + 'logos/marlon.png', website: 'https://solucionesmarlons.com',
     text: 'Soluciones Marlons: renta de equipo amarillo para excavación, carga y compactación en proyectos de construcción.',
