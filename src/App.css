@@ -719,9 +719,10 @@ body.intro-lock .hero h1 .word > span, body.intro-lock .hero-content > * { anima
 .zones-intro .mini-label { color: rgba(255, 255, 255, .8); }
 .zones-intro h3 { margin: 12px 0 14px; font-size: clamp(28px, 3vw, 42px); font-weight: 800; line-height: 1.05; letter-spacing: -.03em; }
 .zones-intro > p { max-width: 520px; margin: 0 0 26px; color: var(--dark-muted); font-size: 16px; line-height: 1.7; }
-.zones-map { position: relative; aspect-ratio: 1.75; border: 1px solid var(--dark-line); background: radial-gradient(rgba(255, 255, 255, .22) 1px, transparent 1.4px) 0 0 / 18px 18px, rgba(0, 0, 0, .1); overflow: hidden; }
+.zones-map { position: relative; aspect-ratio: 1.75; border: 1px solid var(--dark-line); background: radial-gradient(rgba(255, 255, 255, .15) 1px, transparent 1.4px) 0 0 / 18px 18px, rgba(0, 0, 0, .1); overflow: hidden; }
 .zones-map:before { content: 'HN // 14.07°N 87.21°O'; position: absolute; top: 12px; left: 14px; color: rgba(255, 255, 255, .6); font: 700 10px var(--sans); letter-spacing: 1.4px; }
 .zones-map svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+.zones-shape { fill: rgba(255, 255, 255, .13); stroke: rgba(255, 255, 255, .55); stroke-width: 1.2; stroke-linejoin: round; vector-effect: non-scaling-stroke; }
 .zones-map line { stroke: rgba(255, 255, 255, .45); stroke-width: 1.5; stroke-dasharray: 4 5; vector-effect: non-scaling-stroke; animation: zone-dash 1.6s linear infinite; }
 .zones-map line.is-active { stroke: #fff; stroke-width: 2.5; }
 @keyframes zone-dash { to { stroke-dashoffset: -18; } }

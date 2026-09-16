@@ -166,6 +166,11 @@ function CompanyExplorer() {
   )
 }
 
+// Contorno simplificado de Honduras e Islas de la Bahía, proyectado desde lon/lat
+// al espacio 0-100 del SVG compensando el aspect-ratio del contenedor.
+const HN_MAINLAND = 'M24.9 27.1L25.8 25.3L28.4 24.1L30.5 23.4L32.6 21.8L34.7 25.3L39.2 26.4L42.4 25.3L46.8 26.4L50.6 24.1L53.2 21.8L55.1 20.7L58.3 23L63.4 25.3L67.2 23L71.6 23L74.8 25.3L79.9 29.9L83.7 35.6L87.6 40.2L89.5 43.7L86.3 44.8L79.9 47.1L73.6 50.6L68.5 48.3L63.4 52.9L59.5 58.6L56.4 63.2L53.2 67.8L48.7 71.3L44.9 79.3L41.7 82.8L39.8 89.7L36.6 86.2L33.5 82.8L31.3 79.3L29.6 73.6L28.4 69L24.5 66.7L20.7 65.5L17.5 60.9L14.4 59.8L10.5 57L12.2 52.9L13.1 49.4L12.2 44.8L13.1 41.8L15.6 41.8L16.5 37.9L19.4 35.6L21.4 31L23.9 28.7Z'
+const HN_ROATAN = 'M45.5 13.8L47.5 12.6L49.6 11.9L50.6 12.6L49.1 13.8L46.8 14.7Z'
+
 function CoverageZones() {
   const [active, setActive] = useState(null)
   const hub = zones.find((zone) => zone.hub)
@@ -186,6 +191,12 @@ function CoverageZones() {
       </div>
       <div className="zones-map reveal" role="img" aria-label={`Mapa de cobertura en Honduras: ${zones.map((zone) => zone.city).join(', ')}`}>
         <svg viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+          <g className="zones-shape">
+            <path d={HN_MAINLAND} />
+            <path d={HN_ROATAN} />
+            <ellipse cx="41.5" cy="18.4" rx=".8" ry="1.4" />
+            <ellipse cx="54.5" cy="10.3" rx=".7" ry="1.2" />
+          </g>
           {zones.filter((zone) => !zone.hub).map((zone) => (
             <line key={zone.city} x1={hub.x} y1={hub.y} x2={zone.x} y2={zone.y} className={active !== null && zones[active] === zone ? 'is-active' : undefined} />
           ))}
@@ -583,7 +594,7 @@ function CompanyPage({ company }) {
               <p>{company.description ?? company.text} Somos parte del ecosistema de Grupo Empresarial CAP.</p>
               <div className="hero-actions">
                 {company.website && <a className="button button-red" href={company.website} {...external}>Visitar sitio oficial <span aria-hidden="true">↗</span></a>}
-                {company.contact
+                {company.contact?.phone
                   ? <a className="button button-ghost" href={telHref(company.contact.phone)}>Llamar {company.contact.phone} <span aria-hidden="true">↗</span></a>
                   : <a className="button button-ghost" href={contact.whatsapp} {...external}>Contactar <span aria-hidden="true">↗</span></a>}
               </div>
@@ -880,14 +891,17 @@ function HomePage() {
                 <ul className="contact-rows">
                   {company.contact ? (
                     <>
-                      <li>
-                        <span className="contact-row-icon" aria-hidden="true"><svg viewBox="0 0 24 24">{company.contact.address ? contactRowIcons.pin : contactRowIcons.web}</svg></span>
-                        {company.contact.address
-                          ? <address>{company.contact.address}</address>
-                          : <a className="contact-line" href={company.website} {...external}>{company.website?.replace('https://', '')} ↗</a>}
-                      </li>
-                      <li><span className="contact-row-icon" aria-hidden="true"><svg viewBox="0 0 24 24">{contactRowIcons.phone}</svg></span><a className="contact-line" href={telHref(company.contact.phone)}>Tel. {company.contact.phone}</a></li>
-                      <li><span className="contact-row-icon" aria-hidden="true"><svg viewBox="0 0 24 24">{contactRowIcons.mail}</svg></span><a className="contact-line" href={`mailto:${company.contact.email}`}>{company.contact.email.split('@')[0]}@<wbr />{company.contact.email.split('@')[1]}</a></li>
+                      {(company.contact.address || company.website) && (
+                        <li>
+                          <span className="contact-row-icon" aria-hidden="true"><svg viewBox="0 0 24 24">{company.contact.address ? contactRowIcons.pin : contactRowIcons.web}</svg></span>
+                          {company.contact.address
+                            ? <address>{company.contact.address}</address>
+                            : <a className="contact-line" href={company.website} {...external}>{company.website?.replace('https://', '')} ↗</a>}
+                        </li>
+                      )}
+                      {company.contact.phone && <li><span className="contact-row-icon" aria-hidden="true"><svg viewBox="0 0 24 24">{contactRowIcons.phone}</svg></span><a className="contact-line" href={telHref(company.contact.phone)}>Tel. {company.contact.phone}</a></li>}
+                      {company.contact.email && <li><span className="contact-row-icon" aria-hidden="true"><svg viewBox="0 0 24 24">{contactRowIcons.mail}</svg></span><a className="contact-line" href={`mailto:${company.contact.email}`}>{company.contact.email.split('@')[0]}@<wbr />{company.contact.email.split('@')[1]}</a></li>}
+                      {!company.contact.phone && <li><span className="contact-row-icon" aria-hidden="true"><svg viewBox="0 0 24 24">{contactRowIcons.chat}</svg></span><a className="contact-line" href={contact.whatsapp} {...external}>Escríbenos por WhatsApp ↗</a></li>}
                     </>
                   ) : (
                     <>

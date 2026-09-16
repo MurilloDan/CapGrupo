@@ -82,7 +82,7 @@ export const companies = [
     contact: { address: 'Anillo Periférico, Villa Nueva (100 m antes del puente peatonal)', phone: '8944-9954', email: 'gerencia@tecdidasa.co' },
   },
   { name: 'Japan HN', slug: 'japan-hn', type: 'Repuestos japoneses · B2B', logo: B + 'logos/japan-hn.jpg', website: 'https://www.japanhn.com', text: 'Calidad japonesa garantizada en marcas y piezas para el mercado hondureño.' },
-  { name: 'CAP Logistics', slug: 'cap-logistics', type: 'Logística especializada', logo: B + 'logos/cap.png', text: 'La cadena de suministro del grupo, conectando cada punto con eficiencia.' },
+  { name: 'CAP Logistics', slug: 'cap-logistics', type: 'Logística especializada', logo: B + 'logos/cap.png', text: 'La cadena de suministro del grupo, conectando cada punto con eficiencia.', contact: { email: 'grupocap@cap.hn' } },
   {
     name: 'Soluciones Marlons', slug: 'soluciones-marlons', type: 'Renta de maquinaria pesada', logo: B + 'logos/marlon.png', website: 'https://solucionesmarlons.com',
     text: 'Soluciones Marlons: renta de equipo amarillo para excavación, carga y compactación en proyectos de construcción.',
@@ -132,10 +132,11 @@ export const gallery = [
 ]
 
 export const zones = [
-  { city: 'Tegucigalpa', text: 'Sede corporativa, bodegas, tiendas y talleres', x: 43.8, y: 64.2, hub: true },
-  { city: 'San Pedro Sula', text: 'Cobertura comercial y distribución', x: 12, y: 20 },
-  { city: 'La Ceiba', text: 'Atención a la costa norte', x: 59.6, y: 12 },
-  { city: 'Comayagua', text: 'Distribución en la zona central', x: 27.6, y: 52.4, side: 'left' },
-  { city: 'Choluteca', text: 'Cobertura en la zona sur', x: 44.6, y: 88 },
-  { city: 'Olancho', text: 'Atención al oriente del país', x: 82, y: 45.9, side: 'left' },
+  // x/y son la posición geográfica real de cada ciudad proyectada sobre la silueta del mapa.
+  { city: 'Tegucigalpa', text: 'Sede corporativa, bodegas, tiendas y talleres', x: 37.8, y: 65.1, hub: true },
+  { city: 'San Pedro Sula', text: 'Cobertura comercial y distribución', x: 27.3, y: 32.2 },
+  { city: 'La Ceiba', text: 'Atención a la costa norte', x: 43.1, y: 26.2 },
+  { city: 'Comayagua', text: 'Distribución en la zona central', x: 32.3, y: 56.3, side: 'left' },
+  { city: 'Choluteca', text: 'Cobertura en la zona sur', x: 38, y: 82.8 },
+  { city: 'Olancho', text: 'Atención al oriente del país', x: 50.4, y: 51.5, side: 'left' },
 ]
