@@ -38,7 +38,7 @@ export const group = {
 
 export const companies = [
   {
-    name: 'Inversiones S&M', slug: 'inversiones-sm', type: 'Importación y distribución · B2B', logo: B + 'logos/sym.jpg', website: 'https://www.inversionessymhn.com',
+    name: 'Inversiones S&M', slug: 'inversiones-sm', type: 'Importación y distribución · B2B', logo: B + 'logos/SYM-removebg-preview.png', website: 'https://www.inversionessymhn.com',
     text: 'Importación y distribución de autopartes con cobertura nacional para talleres, distribuidores y flotillas.',
     description: 'Inversiones S&M es una empresa líder en importación y distribución de autopartes en Honduras, enfocada en el mercado B2B.',
     highlightsTitle: 'Ofrecemos',
@@ -89,7 +89,18 @@ export const companies = [
     contact: { address: 'Anillo Periférico, Villa Nueva (100 m antes del puente peatonal)', phone: '8944-9954', email: 'gerencia@tecdidasa.co' },
     socials: { facebook: 'https://www.facebook.com/tecnicentrodidasa1', instagram: 'https://www.instagram.com/tecnicentro_didasa/', tiktok: 'https://www.tiktok.com/@didasahn' },
   },
-  { name: 'Japan HN', slug: 'japan-hn', type: 'Repuestos japoneses · B2B', logo: B + 'logos/japan-hn.jpg', website: 'https://www.japanhn.com', text: 'Calidad japonesa garantizada en marcas y piezas para el mercado hondureño.',
+  {
+    name: 'Japan HN', slug: 'japan-hn', type: 'Repuestos japoneses · B2B', logo: B + 'logos/japan-hn.jpg', website: 'https://www.japanhn.com',
+    text: 'Calidad japonesa garantizada en marcas y piezas para el mercado hondureño.',
+    description: 'Japan HN es una empresa especializada en la importación y distribución de repuestos japoneses de alta calidad para el mercado hondureño.',
+    highlightsTitle: 'Nos caracteriza',
+    highlights: ['Calidad garantizada de marcas japonesas', 'Amplio catálogo de repuestos', 'Precios competitivos', 'Atención especializada B2B'],
+    infrastructure: [['1', 'Bodega principal'], ['4', 'Vendedores especializados']],
+    mission: 'Ser el distribuidor líder de repuestos japoneses en Honduras, ofreciendo productos de calidad garantizada y servicios de excelencia a nuestros clientes.',
+    vision: 'Consolidarnos como la opción preferida para repuestos japoneses, reconocidos por confiabilidad, variedad y atención al cliente.',
+    listTitle: 'Marcas principales',
+    list: ['Toyota', 'Honda', 'Nissan', 'Mitsubishi', 'Mazda', 'Isuzu', 'Daihatsu'],
+    contact: { address: 'Barrio Guacerique, Bulevar Comunidad Europea, frente a Plaza Aire Frío, Tegucigalpa, Honduras', phone: '9452-5175', email: 'ventas@japanhn.com' },
     socials: { facebook: 'https://www.facebook.com/rjapanhn/', instagram: 'https://www.instagram.com/japanhn_/', tiktok: 'https://www.tiktok.com/@japan.hn' },
   },
   { name: 'CAP Logistics', slug: 'cap-logistics', type: 'Logística especializada', logo: B + 'logos/cap.png', text: 'La cadena de suministro del grupo, conectando cada punto con eficiencia.', contact: { address: 'Bulevar Comunidad Económica Europea, frente a Plaza Aire Frío', email: 'grupocap@cap.hn' },

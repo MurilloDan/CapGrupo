@@ -2,8 +2,9 @@ import { Children, cloneElement, isValidElement, useEffect, useRef, useState } f
 import './App.css'
 import './routes.css'
 import { companies, contact, downloads, gallery, group, milestones, pillars, processes, stats, zones } from './data'
+import MapaHonduras from './MapaHonduras'
 
-const navItems = [['Nosotros', 'nosotros'], ['Empresas', 'empresas'], ['Cobertura', 'cobertura'], ['Equipo', 'equipo'], ['Trayectoria', 'trayectoria'], ['Contacto', 'contacto']]
+const navItems = [['Home', 'inicio'], ['Empresas', 'empresas'], ['Nosotros', 'nosotros'], ['Cobertura', 'cobertura'], ['Contacto', 'contacto']]
 
 const B = import.meta.env.BASE_URL
 const pad = (number) => String(number).padStart(2, '0')
@@ -11,6 +12,35 @@ const companyUrl = (company) => `${B}empresas/${company.slug}`
 const telHref = (phone) => `tel:+504${phone.replace(/\D/g, '')}`
 const mapsHref = (address) => `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${address}, Tegucigalpa, Honduras`)}`
 const external = { target: '_blank', rel: 'noreferrer' }
+
+function CountUp({ value, suffix = '' }) {
+  const ref = useRef(null)
+  const [animate] = useState(() => !window.matchMedia('(prefers-reduced-motion: reduce)').matches && 'IntersectionObserver' in window)
+  const [shown, setShown] = useState(animate ? 0 : value)
+
+  useEffect(() => {
+    if (!animate) return
+    let frame
+    const observer = new IntersectionObserver(([entry]) => {
+      if (!entry.isIntersecting) return
+      observer.disconnect()
+      const start = performance.now()
+      const tick = (now) => {
+        const progress = Math.min((now - start) / 1800, 1)
+        setShown(Math.round(value * progress))
+        if (progress < 1) frame = requestAnimationFrame(tick)
+      }
+      frame = requestAnimationFrame(tick)
+    }, { threshold: 0.6 })
+    observer.observe(ref.current)
+    return () => {
+      observer.disconnect()
+      cancelAnimationFrame(frame)
+    }
+  }, [animate, value])
+
+  return <span ref={ref}>{pad(shown)}{suffix}</span>
+}
 
 const splitWords = (children, state) => Children.map(children, (child) => {
   if (typeof child === 'string') {
@@ -148,19 +178,15 @@ function CompanyExplorer() {
       <article className="explorer-panel" role="tabpanel" key={current.slug} aria-live="polite">
         <div className="explorer-bar"><span className="status-dot" aria-hidden="true" /><span>CAP // Ecosistema</span><span>{pad(companies.indexOf(current) + 1)}/{pad(companies.length)}</span></div>
         <div className="explorer-body">
-          <div className="explorer-visual" aria-hidden="true">
+          <a href={companyUrl(current)} className="explorer-visual">
             <span className="explorer-ring" />
-            <span className="explorer-hex"><img src={current.logo} alt="" /></span>
-          </div>
+            <span className="explorer-hex"><img src={current.logo} alt={current.name} /></span>
+          </a>
           <div className="explorer-info">
             <div className="explorer-tags"><span className="explorer-segment">{segment ?? 'Grupo'}</span><span className="mini-label">{label}</span></div>
             <h3>{current.name}</h3>
             <p>{current.description ?? current.text}</p>
             {current.infrastructure && <ul className="explorer-stats">{current.infrastructure.map(([value, text]) => <li key={text}><b>{pad(value)}</b><span>{text}</span></li>)}</ul>}
-            <div className="explorer-actions">
-              <a className="button button-red" href={companyUrl(current)}>Conocer más <span aria-hidden="true">→</span></a>
-              {current.website && <a className="button button-outline" href={current.website} {...external}>Sitio web <span aria-hidden="true">↗</span></a>}
-            </div>
             {current.socials && <div className="explorer-social"><span className="mini-label">Síguenos</span><SocialLinks className="is-card" links={current.socials} owner={current.name} networks={companySocials} email={null} /></div>}
           </div>
         </div>
@@ -173,46 +199,6 @@ function CompanyExplorer() {
 // al espacio 0-100 del SVG compensando el aspect-ratio del contenedor.
 const HN_MAINLAND = 'M24.9 27.1L25.8 25.3L28.4 24.1L30.5 23.4L32.6 21.8L34.7 25.3L39.2 26.4L42.4 25.3L46.8 26.4L50.6 24.1L53.2 21.8L55.1 20.7L58.3 23L63.4 25.3L67.2 23L71.6 23L74.8 25.3L79.9 29.9L83.7 35.6L87.6 40.2L89.5 43.7L86.3 44.8L79.9 47.1L73.6 50.6L68.5 48.3L63.4 52.9L59.5 58.6L56.4 63.2L53.2 67.8L48.7 71.3L44.9 79.3L41.7 82.8L39.8 89.7L36.6 86.2L33.5 82.8L31.3 79.3L29.6 73.6L28.4 69L24.5 66.7L20.7 65.5L17.5 60.9L14.4 59.8L10.5 57L12.2 52.9L13.1 49.4L12.2 44.8L13.1 41.8L15.6 41.8L16.5 37.9L19.4 35.6L21.4 31L23.9 28.7Z'
 const HN_ROATAN = 'M45.5 13.8L47.5 12.6L49.6 11.9L50.6 12.6L49.1 13.8L46.8 14.7Z'
-
-function CoverageZones() {
-  const [active, setActive] = useState(null)
-  const hub = zones.find((zone) => zone.hub)
-
-  return (
-    <div className="zones">
-      <div className="zones-intro reveal">
-        <span className="mini-label">Presencia nacional</span>
-        <h3><Words>Zonas de cobertura</Words></h3>
-        <p>Nuestras empresas operan a lo largo de todo Honduras, con infraestructura estratégicamente distribuida para garantizar presencia y servicio en las principales ciudades del país.</p>
-        <ul className="zones-list">
-          {zones.map((zone, index) => (
-            <li key={zone.city} className={active === index ? 'is-active' : undefined} onMouseEnter={() => setActive(index)} onMouseLeave={() => setActive(null)}>
-              <b>{pad(index + 1)}</b><strong>{zone.city}</strong><span>{zone.text}</span>
-            </li>
-          ))}
-        </ul>
-      </div>
-      <div className="zones-map reveal" role="img" aria-label={`Mapa de cobertura en Honduras: ${zones.map((zone) => zone.city).join(', ')}`}>
-        <svg viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
-          <g className="zones-shape">
-            <path d={HN_MAINLAND} />
-            <path d={HN_ROATAN} />
-            <ellipse cx="41.5" cy="18.4" rx=".8" ry="1.4" />
-            <ellipse cx="54.5" cy="10.3" rx=".7" ry="1.2" />
-          </g>
-          {zones.filter((zone) => !zone.hub).map((zone) => (
-            <line key={zone.city} x1={hub.x} y1={hub.y} x2={zone.x} y2={zone.y} className={active !== null && zones[active] === zone ? 'is-active' : undefined} />
-          ))}
-        </svg>
-        {zones.map((zone, index) => (
-          <span key={zone.city} className={`zone-pin${zone.hub ? ' is-hub' : ''}${zone.side === 'left' ? ' is-left' : ''}${active === index ? ' is-active' : ''}`} style={{ left: `${zone.x}%`, top: `${zone.y}%` }} onMouseEnter={() => setActive(index)} onMouseLeave={() => setActive(null)} aria-hidden="true">
-            <i /><span>{zone.city}</span>
-          </span>
-        ))}
-      </div>
-    </div>
-  )
-}
 
 const serviceIcons = {
   admin: <><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" /><path d="M8 13h8M8 16h5" /></>,
@@ -595,20 +581,24 @@ function BackToTop({ home = true }) {
 }
 
 function Footer({ home = true }) {
-  const base = home ? '' : B
   return (
     <footer className="footer">
-      <div className="footer-inner wrap">
-        <div className="footer-brand">
-          <img src={B + 'logos/cap-blanco.png'} alt="Grupo CAP" width="130" height="55" loading="lazy" />
-          <p>Conglomerado empresarial hondureño dedicado al sector automotriz, con cobertura nacional y un compromiso inquebrantable con la excelencia.</p>
-        </div>
-        <div className="footer-col"><span className="mini-label">Empresas</span>{companies.map((company) => <a key={company.slug} href={companyUrl(company)}>{company.name}</a>)}</div>
-        <div className="footer-col"><span className="mini-label">Navegación</span>{navItems.map(([label, id]) => <a key={id} href={`${base}#${id}`}>{label}</a>)}</div>
-        <div className="footer-col"><span className="mini-label">Síguenos</span><SocialLinks className="is-dark" /><a href={contact.instagram} {...external}>Instagram ↗</a><a href={contact.facebook} {...external}>Facebook ↗</a><a href={contact.tiktok} {...external}>TikTok ↗</a><a href={contact.whatsapp} {...external}>WhatsApp ↗</a><a href="mailto:grupocap@cap.hn">grupocap@cap.hn</a></div>
-        <div className="footer-bottom"><span>© {new Date().getFullYear()} Grupo Empresarial CAP</span><span>{contact.city}</span></div>
+      <div className="footer-inner wrap" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+        <img src={B + 'logos/cap-blanco.png'} alt="Grupo CAP" width="130" height="55" loading="lazy" />
+        <ul className="social-links" style={{ gap: 24 }}>
+          <li><a href={contact.instagram} {...external} aria-label="Instagram de Grupo CAP" title="Instagram"><svg viewBox="0 0 24 24" aria-hidden="true" style={{ width: 28, height: 28, color: '#fff' }}><rect x="3" y="3" width="18" height="18" rx="5" stroke="currentColor" fill="none" strokeWidth="1.5" /><circle cx="12" cy="12" r="4" stroke="currentColor" fill="none" strokeWidth="1.5" /><circle cx="17.5" cy="6.5" r="1" fill="currentColor" /></svg></a></li>
+          <li><a href={contact.facebook} {...external} aria-label="Facebook de Grupo CAP" title="Facebook"><svg viewBox="0 0 24 24" aria-hidden="true" style={{ width: 28, height: 28, color: '#fff' }}><path d="M14 8h3V4h-3a4 4 0 0 0-4 4v2H7v4h3v6h4v-6h3l1-4h-4V8.5a.5.5 0 0 1 .5-.5z" stroke="currentColor" fill="none" strokeWidth="1.5" /></svg></a></li>
+          <li><a href={contact.tiktok} {...external} aria-label="TikTok de Grupo CAP" title="TikTok"><svg viewBox="0 0 24 24" aria-hidden="true" style={{ width: 28, height: 28, color: '#fff' }}><path d="M14 3v11.5a3.5 3.5 0 1 1-3.5-3.5M14 3c.4 2.6 2.2 4.4 5 4.6" stroke="currentColor" fill="none" strokeWidth="1.5" /></svg></a></li>
+          <li><a href={contact.whatsapp} {...external} aria-label="WhatsApp de Grupo CAP" title="WhatsApp"><svg viewBox="0 0 24 24" aria-hidden="true" style={{ width: 28, height: 28, color: '#fff' }}><path d="M3.5 20.5l1.3-4.2A8.5 8.5 0 1 1 8 19.3z" stroke="currentColor" fill="none" strokeWidth="1.5" /><path d="M9 8.5c0 3.5 3 6.5 6.5 6.5l1-1.6-2.2-1-1 .9a4.5 4.5 0 0 1-2.1-2.1l.9-1-1-2.2z" stroke="currentColor" fill="none" strokeWidth="1.5" /></svg></a></li>
+        </ul>
+        <span style={{ color: '#fff', fontSize: 14 }}>© {new Date().getFullYear()} Grupo Empresarial CAP</span>
       </div>
-      <BackToTop home={home} />
+      <style>{`
+        footer .social-links { gap: 24px !important; }
+        footer .social-links a { width: auto !important; height: auto !important; border: none !important; padding: 0 !important; display: flex; align-items: center; justify-content: center; background: transparent !important; }
+        footer .social-links svg { width: 28px !important; height: 28px !important; }
+        footer .social-links a:hover { background: transparent !important; transform: none !important; opacity: 0.7; }
+      `}</style>
     </footer>
   )
 }
@@ -629,7 +619,7 @@ function CompanyPage({ company }) {
               <p className="eyebrow">Empresa del Grupo CAP</p>
               <h1><Words>{company.name}</Words></h1>
               <p className="detail-type">{company.type}</p>
-              <p>{company.description ?? company.text} Somos parte del ecosistema de Grupo Empresarial CAP.</p>
+              <p style={{ fontWeight: 600 }}>{company.description ?? company.text} Somos parte del ecosistema de Grupo Empresarial CAP.</p>
               <div className="hero-actions">
                 {company.website && <a className="button button-red" href={company.website} {...external}>Visitar sitio oficial <span aria-hidden="true">↗</span></a>}
                 {company.contact?.phone
@@ -651,7 +641,6 @@ function CompanyPage({ company }) {
 
         {company.description && (
           <section className="section wrap">
-            <SectionLabel number="01">Perfil de la empresa</SectionLabel>
             <div className={`detail-profile${company.infrastructure ? '' : ' is-single'}`}>
               <div className="reveal">
                 <p className="lead">{company.description}</p>
@@ -690,31 +679,73 @@ function CompanyPage({ company }) {
           </section>
         )}
 
-        <section className="section wrap">
-          <SectionLabel number="+">Otras empresas del grupo</SectionLabel>
-          <ul className="others-grid">
-            {others.map((item) => (
-              <li className="reveal" key={item.slug}>
-                <a href={companyUrl(item)}>
-                  <span className="others-logo"><img src={item.logo} alt="" loading="lazy" /></span>
-                  <span><strong>{item.name}</strong><small>{item.type}</small></span>
-                  <span className="arrow" aria-hidden="true">↗</span>
-                </a>
-              </li>
-            ))}
-          </ul>
-        </section>
 
-        <section className="dark-section detail-cta">
-          <div className="section wrap reveal">
-            <span className="mini-label">Conoce más</span>
-            <h2 className="display"><Words>La movilidad<br /><em>nos conecta.</em></Words></h2>
-            <p>Descubre cómo cada empresa del grupo aporta una solución especializada y complementaria para nuestros clientes.</p>
-            <a className="button button-light" href={B + '#contacto'}>Contactar a Grupo CAP <span aria-hidden="true">↗</span></a>
-          </div>
-        </section>
       </main>
       <Footer home={false} />
+    </div>
+  )
+}
+
+function ExpandedAboutPage() {
+  useReveal('about-expanded')
+
+  return (
+    <div className="site-shell company-page">
+      <Header />
+      <main id="contenido">
+        <section className="section wrap" id="nosotros-expanded" style={{ paddingTop: 100 }}>
+          <a href={B + '#nosotros'} style={{ display: 'inline-flex', alignItems: 'center', gap: 8, marginBottom: 50, color: 'var(--red)', textDecoration: 'none', fontWeight: 600, fontSize: 14 }}>
+            <span style={{ fontSize: 18 }}>←</span> Volver
+          </a>
+
+          <h1 className="display" style={{ marginBottom: 40, textAlign: 'center' }}>Quiénes <em>somos</em></h1>
+
+          <div className="about-heading reveal" style={{ borderTop: 'none', paddingTop: 0, paddingBottom: 0, marginBottom: 0, marginTop: 0 }}>
+            <div>
+              <p className="lead" style={{ textAlign: 'justify', maxWidth: 'none', marginBottom: 0 }}>{group.lead.split('Centro de Servicios Compartidos').map((part, index) => index ? <span key={index}><strong>Centro de Servicios Compartidos</strong>{part}</span> : part)}</p>
+            </div>
+          </div>
+
+          <div className="purpose" style={{ marginTop: 16, paddingTop: 0 }}>
+            <div className="mission-grid">
+              <article className="reveal"><span className="mini-label">Nuestra misión</span><p style={{ wordBreak: 'break-word', overflowWrap: 'break-word', hyphens: 'none', WebkitHyphens: 'none' }}>{group.mission}</p></article>
+              <article className="reveal"><span className="mini-label">Nuestra visión</span><p style={{ wordBreak: 'break-word', overflowWrap: 'break-word', hyphens: 'none', WebkitHyphens: 'none' }}>{group.vision}</p></article>
+            </div>
+            <blockquote className="belief reveal"><p>En CAP creemos que <em>la movilidad mueve el progreso</em>, por eso trabajamos para garantizar que cada vehículo en Honduras tenga acceso a repuestos y servicios confiables, seguros y de alto rendimiento.</p></blockquote>
+            <figure className="purpose-photo reveal"><img src={B + 'images/colaboradora.png'} alt="Colaboradora de Grupo CAP con tableta en mano" loading="lazy" /></figure>
+          </div>
+        </section>
+
+        <section className="timeline" style={{ paddingTop: 0, marginTop: -60 }}>
+          <div className="section wrap">
+            <div className="section-heading reveal"><h2 className="display" style={{ hyphens: 'none', WebkitHyphens: 'none', overflowWrap: 'break-word' }}><Words>De dónde venimos<br /><em>define a dónde vamos</em></Words></h2><p>Desde nuestra fundación, cada paso ha sido un avance estratégico hacia la consolidación del sector automotriz hondureño.</p></div>
+            <ol className="timeline-list">{milestones.map(([year, title, text, logos]) => <li className="reveal" key={year}><span className="timeline-year">{year}</span><span className="timeline-logos">{logos.map(([name, src]) => <span className="timeline-logo" key={name} title={name}><img src={src} alt={name} loading="lazy" /></span>)}</span><div><h3>{title}</h3><p>{text}</p></div></li>)}</ol>
+          </div>
+        </section>
+
+        <section className="dark-section" style={{ paddingTop: 60, paddingBottom: 60 }}>
+          <div className="wrap">
+            <h2 className="display" style={{ marginBottom: 40, color: '#fff', textAlign: 'center' }}>Pilares de <em>Grupo CAP</em></h2>
+            <p style={{ fontSize: 18, color: '#fff', textAlign: 'center', marginBottom: 60 }}>Cinco pilares que convierten nuestra visión en decisiones, acciones y resultados.</p>
+          <div className="pillar-hive">
+            <div className="hex hex-core reveal"><div className="hex-inner"><img src={B + 'logos/cap.png'} alt="Grupo CAP" /></div></div>
+            <div className="hex hex-summary hex-pos-6 reveal" aria-hidden="true"><div className="hex-inner"><strong>{pad(pillars.length)}</strong><span>Pilares estratégicos</span></div></div>
+            {pillars.map(([title, text], index) => (
+              <article className={`hex hex-pillar hex-pos-${index + 1} reveal`} key={title}>
+                <div className="hex-inner">
+                  <span className="pillar-icon" aria-hidden="true"><svg viewBox="0 0 24 24">{pillarIcons[index]}</svg></span>
+                  <span className="pillar-step">{pad(index + 1)}</span>
+                  <h3>{title}</h3>
+                  <p>{text}</p>
+                </div>
+              </article>
+            ))}
+          </div>
+          </div>
+        </section>
+
+      </main>
+      <Footer />
     </div>
   )
 }
@@ -728,164 +759,72 @@ function HomePage() {
       <main id="contenido">
         <section className="hero" id="inicio">
           <div className="hero-content">
-            <p className="eyebrow"><span className="status-dot" aria-hidden="true" />Conglomerado empresarial de Honduras</p>
-            <h1><Words>Impulsamos la <em>movilidad</em> que mueve el progreso.</Words></h1>
+            <div className="eyebrow-spacer" />
+            <h1><Words>Impulsamos la <em>movilidad</em><br />que mueve el progreso.</Words></h1>
             <p className="hero-copy">Un grupo. Una visión. Todas las soluciones para el sector automotriz: importación, distribución, venta al detalle, servicio y logística.</p>
             <div className="hero-actions">
               <a className="button button-red" href="#empresas">Conoce nuestras empresas <span aria-hidden="true">↓</span></a>
               <a className="button button-ghost" href="#contacto">Conversemos <span aria-hidden="true">↗</span></a>
             </div>
-            <dl className="hero-data">{stats.slice(0, 3).map((stat) => <div key={stat.label}><dt>{stat.label}</dt><dd>{String(stat.value).padStart(2, '0')}{stat.suffix}</dd></div>)}</dl>
-          </div>
-          <div className="hero-media">
-            <img src={B + 'images/equipo-grupo-cap.jpg'} alt="Equipo de Grupo CAP frente al logo corporativo" fetchPriority="high" />
-            <span className="hud-scan" aria-hidden="true" />
-            <span className="hud hud-tl" aria-hidden="true" /><span className="hud hud-tr" aria-hidden="true" /><span className="hud hud-bl" aria-hidden="true" /><span className="hud hud-br" aria-hidden="true" />
-            <p className="hud-tag" aria-hidden="true"><span className="status-dot" />Grupo CAP // Equipo</p>
           </div>
         </section>
 
-        <section className="brands" aria-label="Empresas del grupo">
-          <div className="brands-inner wrap">
-            <p className="brands-label">Empresas<br />del grupo</p>
-            <div className="brands-marquee">
-              <ul className="brands-list">
-                {[...companies, ...companies].map((company, index) => {
-                  const copy = index >= companies.length
-                  return <li key={`${company.slug}-${index}`} aria-hidden={copy || undefined}><a href={companyUrl(company)} title={company.name} tabIndex={copy ? -1 : undefined}><img src={company.logo} alt={copy ? '' : company.name} /></a></li>
-                })}
-              </ul>
-            </div>
-          </div>
+        <section className="section wrap" id="empresas" style={{ paddingTop: 80 }}>
+          <div className="section-heading reveal" style={{ marginBottom: 32 }}><h2 className="display"><Words>Siete empresas.<br /><em>Una misma Visión.</em></Words></h2><p className="justified-text">Un ecosistema integral que cubre toda la cadena de valor del sector automotriz hondureño, complementado con el alquiler de maquinaria pesada para construcción.</p></div>
+          <CompanyExplorer />
         </section>
 
-        <section className="stats wrap" aria-label="Grupo CAP en cifras">{stats.map((stat) => <Stat key={stat.label} {...stat} />)}</section>
+        <section className="dark-section" id="cobertura" style={{ paddingTop: 24, paddingBottom: 24, backgroundImage: 'none' }}>
+          <div className="section wrap" style={{ paddingTop: 0, paddingBottom: 0 }}>
+            <div className="section-heading reveal" style={{ marginBottom: 20 }}><h2 className="display"><Words>Números que respaldan<br /><em>nuestra cobertura.</em></Words></h2></div>
+            <dl className="coverage-totals reveal">
+              {coverageTotals.map(([label, value]) => <div key={label}><dt>{label}</dt><dd><CountUp value={value} /></dd></div>)}
+            </dl>
+          </div>
+        </section>
 
         <section className="section wrap" id="nosotros">
-          <SectionLabel number="01">Quiénes somos</SectionLabel>
+          <h2 className="display" style={{ marginBottom: 0, textAlign: 'left' }}>Quiénes <em>somos</em></h2>
           <div className="about-grid">
             <div className="about-text reveal">
-              <p>{group.traits}</p>
-              <div className="services">
-                <span className="mini-label">Funciones que centralizamos</span>
-                <ul className="services-grid">{group.sharedServices.map(({ label, icon }, index) => <li key={label}><span className="service-icon" aria-hidden="true"><svg viewBox="0 0 24 24">{serviceIcons[icon]}</svg></span><span className="service-text"><small>{String(index + 1).padStart(2, '0')}</small>{label}</span></li>)}</ul>
-              </div>
-              <a className="text-link" href="#pilares">Nuestra forma de hacer las cosas <span aria-hidden="true">↗</span></a>
+              <p style={{ textAlign: 'justify' }}>{group.traits}</p>
+              <a href={B + 'nosotros-completo'} className="button button-red">Ver más <span aria-hidden="true">→</span></a>
             </div>
             <figure className="about-media reveal">
               <img src={B + 'images/equipo-oficina.jpg'} alt="Parte del equipo de Grupo CAP en las oficinas corporativas" loading="lazy" />
               <figcaption><strong>160+</strong><span>Colaboradores comprometidos</span></figcaption>
             </figure>
           </div>
-          <div className="about-heading reveal">
-            <div>
-              <h2 className="display"><Words>Un solo grupo.<br /><em>Un gran movimiento.</em></Words></h2>
-              <div className="red-rule" />
-            </div>
-            <div>
-              <p className="lead">{group.lead.split('Centro de Servicios Compartidos').map((part, index) => index ? <span key={index}><strong>Centro de Servicios Compartidos</strong>{part}</span> : part)}</p>
-              <div className="members">
-                <span className="mini-label">Empresas que integran el grupo</span>
-                <ul className="members-list">{group.members.map((slug) => companies.find((company) => company.slug === slug)).map((company) => (
-                  <li key={company.slug}><a href={companyUrl(company)}><span className="members-logo"><img src={company.logo} alt="" loading="lazy" /></span>{company.name}<span className="members-arrow" aria-hidden="true">→</span></a></li>
-                ))}</ul>
-              </div>
-            </div>
-          </div>
-          <div className="purpose">
-          <div className="mission-grid">
-            <article className="reveal"><span className="mini-label">Nuestra misión</span><p>{group.mission}</p></article>
-            <article className="reveal"><span className="mini-label">Nuestra visión</span><p>{group.vision}</p></article>
-          </div>
-          <blockquote className="belief reveal"><p>En CAP creemos que <em>la movilidad mueve el progreso</em>, por eso trabajamos para garantizar que cada vehículo en Honduras tenga acceso a repuestos y servicios confiables, seguros y de alto rendimiento.</p></blockquote>
-          <figure className="purpose-photo reveal"><img src={B + 'images/colaboradora.png'} alt="Colaboradora de Grupo CAP con tableta en mano" loading="lazy" /></figure>
-          </div>
         </section>
 
-        <section className="dark-section" id="pilares">
-          <div className="section wrap">
-            <SectionLabel number="02">Estrategia corporativa</SectionLabel>
-            <div className="section-heading reveal"><h2 className="display"><Words>La dirección<br /><em>es clara.</em></Words></h2><p>Cinco pilares que convierten nuestra visión en decisiones, acciones y resultados.</p></div>
-            <div className="pillar-hive">
-              <div className="hex hex-core reveal"><div className="hex-inner"><img src={B + 'logos/cap.png'} alt="Grupo CAP" /></div></div>
-              <div className="hex hex-summary hex-pos-6 reveal" aria-hidden="true"><div className="hex-inner"><strong>{pad(pillars.length)}</strong><span>Pilares estratégicos</span></div></div>
-              {pillars.map(([title, text], index) => (
-                <article className={`hex hex-pillar hex-pos-${index + 1} reveal`} key={title}>
-                  <div className="hex-inner">
-                    <span className="pillar-icon" aria-hidden="true"><svg viewBox="0 0 24 24">{pillarIcons[index]}</svg></span>
-                    <span className="pillar-step">{pad(index + 1)}</span>
-                    <h3>{title}</h3>
-                    <p>{text}</p>
-                  </div>
-                </article>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        <section className="section wrap" id="empresas">
-          <SectionLabel number="03">Portafolio corporativo</SectionLabel>
-          <div className="section-heading reveal"><h2 className="display"><Words>Siete empresas.<br /><em>Una misma energía.</em></Words></h2><p>Un ecosistema especializado que cubre toda la cadena de valor del sector automotriz hondureño, además del alquiler de maquinaria pesada para construcción.</p></div>
-          <CompanyExplorer />
-        </section>
-
-        <section className="dark-section" id="cobertura">
-          <div className="section wrap">
-            <SectionLabel number="04">Cobertura y procesos</SectionLabel>
-            <div className="section-heading reveal"><h2 className="display"><Words>Cobertura nacional<br /><em>completa.</em></Words></h2><p>Atendemos clientes a lo largo de todo el país con vendedores, bodegas, talleres y tiendas distribuidas estratégicamente.</p></div>
-            <dl className="coverage-totals reveal">
-              {coverageTotals.map(([label, value]) => <div key={label}><dt>{label}</dt><dd>{pad(value)}</dd></div>)}
-            </dl>
-            <ul className="network-list">
-              {companies.filter((company) => company.infrastructure).map((company) => {
-                const [label, segment] = company.type.split(' · ')
-                return (
-                  <li className="network-card reveal" key={company.slug}>
-                    <a className="network-head" href={companyUrl(company)}>
-                      <span className="network-logo"><img src={company.logo} alt="" loading="lazy" /></span>
-                      <span><strong>{company.name}</strong><small>{label}</small></span>
-                      {segment && <span className="network-segment">{segment}</span>}
-                    </a>
-                    <ul className="infra">{company.infrastructure.map(([value, text]) => <li key={text}><b>{pad(value)}</b><span>{text}</span></li>)}</ul>
-                  </li>
-                )
-              })}
-            </ul>
-            <CoverageZones />
-            <h3 className="subheading reveal"><Words>Procesos clave del Grupo CAP</Words></h3>
-            <ProcessGallery />
-          </div>
-        </section>
-
-        <section className="team" id="equipo">
-          <div className="section wrap">
-            <SectionLabel number="05">Nuestro equipo</SectionLabel>
-            <div className="section-heading reveal"><h2 className="display"><Words>Personas que<br /><em>mueven el grupo.</em></Words></h2><p>Detrás de cada pieza entregada y cada vehículo atendido hay un equipo comprometido con la calidad y el servicio.</p></div>
-            <TeamGallery />
-          </div>
-        </section>
-
-        <section className="timeline" id="trayectoria">
-          <div className="section wrap">
-            <SectionLabel number="06">Nuestra historia</SectionLabel>
-            <div className="section-heading reveal"><h2 className="display"><Words>De dónde venimos<br /><em>define a dónde vamos.</em></Words></h2><p>Desde nuestra fundación, cada paso ha sido un avance estratégico hacia la consolidación del sector automotriz hondureño.</p></div>
-            <ol className="timeline-list">{milestones.map(([year, title, text, logos]) => <li className="reveal" key={year}><span className="timeline-year">{year}</span><span className="timeline-logos">{logos.map(([name, src]) => <span className="timeline-logo" key={name} title={name}><img src={src} alt={name} loading="lazy" /></span>)}</span><div><h3>{title}</h3><p>{text}</p></div></li>)}</ol>
-          </div>
-        </section>
-
-        <section className="future">
+        <section className="future" style={{ minHeight: 400, paddingBottom: 0, marginBottom: 0 }}>
           <img className="future-image" src={B + 'images/equipo-almacen.jpg'} alt="" loading="lazy" />
           <div className="future-copy wrap reveal">
-            <span className="mini-label">Visión de futuro</span>
+            <h3 style={{ fontSize: 28, fontWeight: 600, color: '#fff', letterSpacing: '1.4px', textTransform: 'uppercase', margin: '0 0 18px' }}>Visión de futuro</h3>
             <h2 className="display"><Words>Construimos hoy<br />el sector de <em>mañana.</em></Words></h2>
-            <p>Con una estrategia clara de expansión, innovación tecnológica y desarrollo de talento humano, Grupo CAP se posiciona como el conglomerado automotriz de referencia en Centroamérica.</p>
-            <a className="button button-light" href="#contacto">Hablemos de futuro <span aria-hidden="true">↗</span></a>
+            <p style={{ textAlign: 'justify' }}>Con una estrategia clara de expansión, innovación tecnológica y desarrollo de talento humano, Grupo CAP se posiciona como el conglomerado automotriz de referencia en Centroamérica.</p>
           </div>
         </section>
 
-        <section className="section wrap" id="contacto">
-          <SectionLabel number="07">Contacto corporativo</SectionLabel>
-          <div className="contact-grid">
+        <section className="section" id="contacto" style={{ paddingTop: 0 }}>
+          <div className="careers reveal" style={{ marginLeft: 'calc(-50vw + 50%)', marginRight: 'calc(-50vw + 50%)', paddingLeft: 'calc(50vw - 50%)', paddingRight: 'calc(50vw - 50%)' }}>
+            <img className="careers-mark" src={B + 'logos/cap-intro.png'} alt="" aria-hidden="true" loading="lazy" />
+            <div className="careers-copy">
+              <img className="careers-logo" src={B + 'logos/cap-intro.png'} alt="Grupo CAP" loading="lazy" />
+              <span className="mini-label">Talento CAP</span>
+              <h3><Words>¿Deseas trabajar con nosotros?</Words></h3>
+              <p style={{ textAlign: 'justify' }}>Súmate a un equipo que impulsa la movilidad en Honduras. Consulta nuestras vacantes disponibles y conoce más de nuestra cultura en LinkedIn.</p>
+            </div>
+            <div className="careers-actions">
+              <a className="button button-light" href={contact.recruit} {...external}>Ver vacantes <span aria-hidden="true">↗</span></a>
+              <a className="button button-ghost" href={contact.linkedin} {...external}>
+                <svg className="careers-icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="3" /><path d="M8 10v7M8 7v.01M12 17v-4a2 2 0 0 1 4 0v4M12 10v7" /></svg>
+                LinkedIn <span aria-hidden="true">↗</span>
+              </a>
+            </div>
+          </div>
+
+          <div className="contact-grid wrap" style={{ marginTop: 80 }}>
             <figure className="contact-photo reveal">
               <span className="contact-photo-hex" aria-hidden="true" />
               <img src={B + 'images/colaborador-carga.png'} alt="Colaborador de Grupo CAP transportando cajas con carretilla" loading="lazy" />
@@ -901,97 +840,14 @@ function HomePage() {
               <div className="contact-social"><span className="mini-label">Síguenos en redes</span><SocialLinks /></div>
             </div>
             <dl className="contact-details reveal">
-              <div><dt><span className="contact-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 21s-7-6.2-7-11.5a7 7 0 0 1 14 0C19 14.8 12 21 12 21z" /><circle cx="12" cy="9.5" r="2.5" /></svg></span>Sede corporativa</dt><dd>{contact.city}</dd></div>
               <div><dt><span className="contact-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2z" /></svg></span>Llámanos</dt><dd><a href={`tel:${contact.phoneHref}`}>{contact.phone}</a></dd></div>
               <div><dt><span className="contact-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2" /><path d="M3 7l9 6 9-6" /></svg></span>Escríbenos</dt><dd><a href={`mailto:${contact.email}`}>{contact.email.split('@')[0]}@<wbr />{contact.email.split('@')[1]}</a></dd></div>
               <div><dt><span className="contact-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" /><path d="M12 7v5l3 2" /></svg></span>Horario</dt><dd>{contact.hours}</dd></div>
               <div><dt><span className="contact-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3 21h18M5 21V7l7-4 7 4v14M9 21v-5h6v5M9 10h.01M15 10h.01" /></svg></span>Dirección</dt><dd><a href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(contact.mapQuery)}`} {...external}>{contact.address}</a></dd></div>
             </dl>
           </div>
-          <div className="contact-map reveal">
-            <iframe title={`Mapa: ${contact.address}`} src={`https://maps.google.com/maps?q=${encodeURIComponent(contact.mapQuery)}&z=16&output=embed`} loading="lazy" referrerPolicy="no-referrer-when-downgrade" />
-            <div className="contact-map-bar">
-              <span className="contact-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 21s-7-6.2-7-11.5a7 7 0 0 1 14 0C19 14.8 12 21 12 21z" /><circle cx="12" cy="9.5" r="2.5" /></svg></span>
-              <div><span className="mini-label">Sede corporativa</span><strong>{contact.address}</strong></div>
-              <a className="button button-red" href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(contact.mapQuery)}`} {...external}>Abrir en Maps <span aria-hidden="true">↗</span></a>
-            </div>
-          </div>
-          <h3 className="subheading reveal"><Words>Contacto de nuestras empresas</Words></h3>
-          <ul className="contacts-grid">
-            {companies.filter((company) => company.contact || ['cap-logistics', 'soluciones-marlons'].includes(company.slug)).map((company) => (
-              <li className={`contact-card reveal${company.contact ? '' : ' is-pending'}`} key={company.slug}>
-                <div className="contact-card-head">
-                  <a className="contacts-logo" href={companyUrl(company)} aria-label={`Ver ${company.name}`}><img src={company.logo} alt="" loading="lazy" /></a>
-                  <div>
-                    <strong>{company.name}</strong>
-                    <span className="contact-card-type">{company.type.split(' · ')[0]}</span>
-                  </div>
-                  {company.socials && <SocialLinks className="is-card" links={company.socials} owner={company.name} networks={companySocials} email={null} />}
-                </div>
-                <ul className="contact-rows">
-                  {company.contact ? (
-                    <>
-                      {(company.contact.address || company.website) && (
-                        <li>
-                          <span className="contact-row-icon" aria-hidden="true"><svg viewBox="0 0 24 24">{company.contact.address ? contactRowIcons.pin : contactRowIcons.web}</svg></span>
-                          {company.contact.address
-                            ? <address>{company.contact.address}</address>
-                            : <a className="contact-line" href={company.website} {...external}>{company.website?.replace('https://', '')} ↗</a>}
-                        </li>
-                      )}
-                      {company.contact.phone && <li><span className="contact-row-icon" aria-hidden="true"><svg viewBox="0 0 24 24">{contactRowIcons.phone}</svg></span><a className="contact-line" href={telHref(company.contact.phone)}>Tel. {company.contact.phone}</a></li>}
-                      {company.contact.email && <li><span className="contact-row-icon" aria-hidden="true"><svg viewBox="0 0 24 24">{contactRowIcons.mail}</svg></span><a className="contact-line" href={`mailto:${company.contact.email}`}>{company.contact.email.split('@')[0]}@<wbr />{company.contact.email.split('@')[1]}</a></li>}
-                      {!company.contact.phone && <li><span className="contact-row-icon" aria-hidden="true"><svg viewBox="0 0 24 24">{contactRowIcons.chat}</svg></span><a className="contact-line" href={contact.whatsapp} {...external}>Escríbenos por WhatsApp ↗</a></li>}
-                    </>
-                  ) : (
-                    <>
-                      <li><span className="contact-row-icon" aria-hidden="true"><svg viewBox="0 0 24 24">{contactRowIcons.pin}</svg></span><address>Información de contacto próximamente</address></li>
-                      <li><span className="contact-row-icon" aria-hidden="true"><svg viewBox="0 0 24 24">{contactRowIcons.chat}</svg></span><a className="contact-line" href={contact.whatsapp} {...external}>Escríbenos por WhatsApp ↗</a></li>
-                    </>
-                  )}
-                </ul>
-                <a className="contact-card-more" href={companyUrl(company)}>Ver empresa <span aria-hidden="true">→</span></a>
-              </li>
-            ))}
-          </ul>
-          <div className="careers reveal">
-            <img className="careers-mark" src={B + 'logos/cap-intro.png'} alt="" aria-hidden="true" loading="lazy" />
-            <div className="careers-copy">
-              <img className="careers-logo" src={B + 'logos/cap-intro.png'} alt="Grupo CAP" loading="lazy" />
-              <span className="mini-label">Talento CAP</span>
-              <h3><Words>¿Deseas trabajar con nosotros?</Words></h3>
-              <p>Súmate a un equipo que impulsa la movilidad en Honduras. Consulta nuestras vacantes disponibles y conoce más de nuestra cultura en LinkedIn.</p>
-            </div>
-            <div className="careers-actions">
-              <a className="button button-light" href={contact.recruit} {...external}>Ver vacantes <span aria-hidden="true">↗</span></a>
-              <a className="button button-ghost" href={contact.linkedin} {...external}>
-                <svg className="careers-icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="3" /><path d="M8 10v7M8 7v.01M12 17v-4a2 2 0 0 1 4 0v4M12 10v7" /></svg>
-                LinkedIn <span aria-hidden="true">↗</span>
-              </a>
-            </div>
-          </div>
         </section>
 
-        <section className="downloads" id="material">
-          <div className="section wrap downloads-inner">
-            <div className="downloads-copy reveal">
-              <span className="mini-label">Conoce más</span>
-              <h2 className="display"><Words>Material corporativo<br /><em>para llevar.</em></Words></h2>
-              <p>Descarga una introducción formal al grupo o un resumen visual para consultarlo cuando lo necesites.</p>
-            </div>
-            <ul className="downloads-list">
-              {downloads.map((item) => (
-                <li className="reveal" key={item.href}>
-                  <a className="download-card" href={item.href} download>
-                    <span className="download-format">{item.format}</span>
-                    <span className="download-text"><strong>{item.title}</strong><small>{item.text} · {item.size}</small></span>
-                    <svg className="download-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v11M7 10l5 5 5-5M5 20h14" /></svg>
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </div>
-        </section>
       </main>
       <Footer />
     </div>
@@ -1001,5 +857,6 @@ function HomePage() {
 export default function App() {
   const path = window.location.pathname.replace(/\/$/, '')
   const company = companies.find((item) => path === companyUrl(item))
-  return company ? <CompanyPage company={company} /> : <><Intro /><HomePage /></>
+  const isExpandedAbout = path === B.replace(/\/$/, '') + '/nosotros-completo'
+  return company ? <CompanyPage company={company} /> : isExpandedAbout ? <ExpandedAboutPage /> : <><Intro /><HomePage /></>
 }
